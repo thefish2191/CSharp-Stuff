@@ -1,2 +1,2 @@
 "use strict";
-//# sourceMappingURL=Templator.js.map
+//# sourceMappingURL=templator.js.map

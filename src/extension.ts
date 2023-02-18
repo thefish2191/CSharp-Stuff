@@ -7,12 +7,11 @@ let result: string[];
 
 
 export async function activate(context: vscode.ExtensionContext) {
+    updateProjectList();
+    vscode.window.onDidChangeActiveTerminal(() => updateProjectList());
     let itemGenerator = vscode.commands.registerCommand(`dotnet-helper.itemGenerator`, async (invoker: vscode.Uri) => {
-        updateProjectList();
-        console.log(`here we go`);
         result.forEach(element => {
             console.log(element);
-
         });
     });
     let getFileLocalPath = vscode.commands.registerCommand(`dotnet-helper.fileLocationSpotter`, async (prayer) => {
@@ -24,11 +23,15 @@ export function deactivate() { }
 
 
 function updateProjectList() {
+    console.log(`Updating project list`);
+
     try {
         vscode.workspace.findFiles('**/*.csproj')
             .then((dir: vscode.Uri[]) => {
+                result = new Array();
                 dir.forEach(element => {
-                    result.push(element.fsPath);
+                    let path = element.fsPath;
+                    result.push(path);
                 });
             });
     } catch (error) {

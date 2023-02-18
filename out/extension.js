@@ -6,9 +6,9 @@ const os = require("os");
 // A reference to all csproj in the root
 let result;
 async function activate(context) {
+    updateProjectList();
+    vscode.window.onDidChangeActiveTerminal(() => updateProjectList());
     let itemGenerator = vscode.commands.registerCommand(`dotnet-helper.itemGenerator`, async (invoker) => {
-        updateProjectList();
-        console.log(`here we go`);
         result.forEach(element => {
             console.log(element);
         });
@@ -21,11 +21,14 @@ exports.activate = activate;
 function deactivate() { }
 exports.deactivate = deactivate;
 function updateProjectList() {
+    console.log(`Updating project list`);
     try {
         vscode.workspace.findFiles('**/*.csproj')
             .then((dir) => {
+            result = new Array();
             dir.forEach(element => {
-                result.push(element.fsPath);
+                let path = element.fsPath;
+                result.push(path);
             });
         });
     }
