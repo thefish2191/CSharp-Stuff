@@ -16,12 +16,16 @@
   "contributes": {
     "commands": [
       {
-        "command": "dotnet-helper.namespaceGenerate",
-        "title": "Get Namespace"
+        "command": "dotnet-helper.itemGenerator",
+        "title": "Create Class"
       },
       {
         "command": "dotnet-helper.fileLocationSpotter",
         "title": "Locate this file"
+      },
+      {
+        "command": "dotnet-helper.tester",
+        "title": "Testing"
       }
     ],
     "submenus": [
@@ -32,19 +36,29 @@
       {
         "id": "csOptions",
         "label": "cs options"
+      },
+      {
+        "id": "JustRunIt",
+        "label": "Test"
       }
     ],
     "menus": {
       "newItem": [
         {
           "group": "newClass",
-          "command": "dotnet-helper.namespaceGenerate"
+          "command": "dotnet-helper.itemGenerator"
         }
       ],
       "csOptions": [
         {
           "group": "cs",
           "command": "dotnet-helper.fileLocationSpotter"
+        }
+      ],
+      "JustRunIt": [
+        {
+          "group": "test",
+          "command": "dotnet-helper.tester"
         }
       ],
       "explorer/context": [
@@ -55,6 +69,11 @@
         },
         {
           "submenu": "csOptions",
+          "group": "navigation",
+          "when": "resourceExtname==.cs"
+        },
+        {
+          "submenu": "JustRunIt",
           "group": "navigation"
         }
       ]
