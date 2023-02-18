@@ -1,13 +1,13 @@
 {
   "name": "dotnet-helper",
-  "displayName": "dotnet-helper",
+  "displayName": "Dotnet helper",
   "description": "vs code extension to help dotnet developers do dotnet stuff",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages"
   ],
   "activationEvents": [
     "*"

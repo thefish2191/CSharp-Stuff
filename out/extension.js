@@ -2,14 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
-const os = require("os");
-const projectFinder_1 = require("./projectFinder");
-const osSeparator = os.platform() === "win32" ? "/" : "\\";
+const namespaceGenerator = require("./namespaceGenerator");
 async function activate(context) {
     let itemGenerator = vscode.commands.registerCommand(`dotnet-helper.itemGenerator`, async (caller) => {
         try {
-            let tempt = (0, projectFinder_1.findCsproj)(caller);
-            console.log(tempt?.fsPath);
+            console.log(namespaceGenerator.getNamespace(caller));
         }
         catch (error) {
             console.log(error);

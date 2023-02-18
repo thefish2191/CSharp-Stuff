@@ -20,14 +20,14 @@ function getCallerInfo(caller) {
     else if (fs.lstatSync(caller.fsPath).isDirectory()) {
         incomingType = ResourceType.folder;
     }
-    let tempCallerUri = vscode.Uri.file(caller.fsPath).toString();
-    let tempWSFolder = vscode.workspace.getWorkspaceFolder(caller)?.uri.toString();
+    let tempCallerUri = vscode.Uri.file(caller.fsPath).fsPath;
+    let tempWSFolder = vscode.Uri.file(vscode.workspace.getWorkspaceFolder(caller).uri.fsPath).fsPath;
     let tempDir = tempCallerUri.replace(tempWSFolder, '');
     if (incomingType === ResourceType.file) {
         tempDir = tempDir.replace(exports.fileNameRex, '');
     }
     if (incomingType === ResourceType.folder) {
-        tempDir += exports.osSeparator;
+        tempDir;
     }
     /**
      * Caller info, but better
