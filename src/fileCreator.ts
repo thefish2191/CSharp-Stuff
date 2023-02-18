@@ -4,8 +4,11 @@ import * as join from 'path';
 
 const whiteSpace = /(\s)/g;
 
+/*
+export async function fileCreator(target: vscode.Uri) {
+    callerInfo.getCallerInfo()
+    let callerInfo = getCallerInfo(target);
 
-export async function fileCreator(target: any) {
     // Get the whole path, with system specific separator, 
     let rootFolderUri = vscode.workspace.getWorkspaceFolder(target)?.uri.fsPath!;
 
@@ -56,3 +59,4 @@ export function findFileLocalPath(target: any) {
     // Creates a possible namespace
     return fileName;
 }
+*/
