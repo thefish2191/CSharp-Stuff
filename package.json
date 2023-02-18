@@ -10,7 +10,9 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:csharp",
+    "workspaceContains:*.cs",
+    "workspaceContains:*.csproj"
   ],
   "main": "./out/extension.js",
   "contributes": {
