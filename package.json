@@ -19,7 +19,8 @@
     "commands": [
       {
         "command": "dotnet-helper.itemGenerator",
-        "title": "Create Class"
+        "title": "Create Class",
+        "enablement": ""
       },
       {
         "command": "dotnet-helper.fileLocationSpotter",

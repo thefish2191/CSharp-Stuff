@@ -2,47 +2,81 @@ import * as vscode from 'vscode';
 import * as namespaceGenerator from './namespaceGenerator';
 import * as os from 'os';
 
-// A reference to all csproj in the root
-let result: string[];
 
+let rootDir: string;
+
+const fileNameRex = /(([/\\][\w\d\s\-\_\(\)\,\=\;]+)\.*([\w\d])*)$/gm;
+const fileExNameRex = /\.+([\w\d])+$/gm;
+const folderRegexFront = /^([/\\])([\w\d\s\-\_\(\)\,\=\;]+)/gm;
+
+
+let projectsDirs: string[];
+let projectsDirsNoFilename: string[];
+let projectsDirsNoNothing: string[];
 
 export async function activate(context: vscode.ExtensionContext) {
-    updateProjectList();
-    vscode.window.onDidChangeActiveTerminal(() => updateProjectList());
+    console.clear();
+
+
+    // register the updater to the event on did create files
+    // vscode.workspace.onDidCreateFiles(() => updateProjectList());
+
+    // Do the other stuff
     let itemGenerator = vscode.commands.registerCommand(`dotnet-helper.itemGenerator`, async (invoker: vscode.Uri) => {
-        result.forEach(element => {
-            console.log(element);
+        vscode.workspace.findFiles('**/*.csproj')
+            .then((dir) => {
+                projectsDirs = new Array();
+                dir.forEach(element => {
+                    projectsDirs.push(element.fsPath);
+                });
+            });
+
+
+        console.log(`Deleting filenames`);
+        projectsDirsNoFilename = new Array();
+        projectsDirs.forEach(element => {
+            projectsDirs.forEach((element) => {
+                let temp = element.replace(fileExNameRex, '');
+                console.log(temp);
+                projectsDirsNoFilename!.push(temp);
+            });
+            console.log((`Deleting external path`));
+            projectsDirsNoNothing = new Array();
+            projectsDirsNoFilename.forEach(element => {
+                let temp = element.replace(folderRegexFront, '');
+                projectsDirsNoNothing!.push(temp);
+                console.log(temp);
+
+            });
+
+            // split incoming path in individual folders
+            // checks if the first matches in any string in the ws list
+            // if not, no root project
+            // if yes, add the next folder to the slice, and repeat
+
+
+            let pathFromClick = invoker.fsPath;
+            rootDir = vscode.workspace.getWorkspaceFolder(invoker)?.uri.fsPath!;
+
+            // Attempt to find the perfect namespace
+            let lastMatch: string;
+            /*
+            projectsDirsNoNothing.forEach(element => {
+                let temp = element.split(folderRegexFront);
+            });*/
         });
     });
-    let getFileLocalPath = vscode.commands.registerCommand(`dotnet-helper.fileLocationSpotter`, async (prayer) => {
-    });
 }
+
+
 // This method is called when the extension is deactivated
 export function deactivate() { }
 
 
 
-function updateProjectList() {
-    console.log(`Updating project list`);
 
-    try {
-        vscode.workspace.findFiles('**/*.csproj')
-            .then((dir: vscode.Uri[]) => {
-                result = new Array();
-                dir.forEach(element => {
-                    let path = element.fsPath;
-                    result.push(path);
-                });
-            });
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 export class ItemInfo {
-    static fileNameRex = /(([\w\d\s\-\_\(\)\,\=\;]+)\.*)+([\w\d])+$/gm;
-    static fileExNameRex = /\.+([\w\d])+$/gm;
-    static osSeparator = os.platform() === "win32" ? "\\" : "/";
 
     rootFolderUri: vscode.Uri;
     rootFolderName: string;
@@ -57,17 +91,16 @@ export class ItemInfo {
         let tempWSFolder = vscode.Uri.file(vscode.workspace.getWorkspaceFolder(item)!.uri.fsPath).fsPath;
         let tempDir = tempCallerUri.replace(tempWSFolder, '');
 
-        let nameWithEx = item.fsPath.match(ItemInfo.fileNameRex)?.toString();
-        let nameNoEx = nameWithEx?.replace(ItemInfo.fileExNameRex, '');
+        let nameWithEx = item.fsPath.match(fileNameRex)?.toString();
+        let nameNoEx = nameWithEx?.replace(fileExNameRex, '');
 
         this.rootFolderUri = vscode.workspace.getWorkspaceFolder(item)!.uri;
         this.rootFolderName = vscode.workspace.getWorkspaceFolder(item)!.name;
 
 
         this.callerUri = vscode.Uri.file(item.fsPath);
-        this.callerNameWithEx = item.fsPath.match(ItemInfo.fileNameRex)?.toString()!;
+        this.callerNameWithEx = item.fsPath.match(fileNameRex)?.toString()!;
         this.callerNameNoEx = nameNoEx!;
         this.callerDir = tempDir;
-
     }
 }
