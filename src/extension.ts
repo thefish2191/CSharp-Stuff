@@ -1,38 +1,52 @@
 import * as vscode from 'vscode';
-import * as os from 'os';
 import path = require('path');
-import { url } from 'inspector';
-import { stringify } from 'querystring';
-import { promises } from 'fs';
-import { time } from 'console';
+import * as fs from 'fs';
+import { SnippetString } from 'vscode';
 
-
-let rootDir: string;
 
 // const fileNameRex = /(([/\\][\w\d\s\-\_\(\)\,\=\;]+)\.*([\w\d])*)$/gm; // testing a new one
 const fileNameRex = /([\\\/]){1}([^\/\\]*.)$/gm;
 const separatorsRegex = /[\/\\]/gm;
 const folderName = /^(.*)([\/\\])/gm;
 
-export async function activate(context: vscode.ExtensionContext) {
-    let itemGenerator = vscode.commands.registerCommand(`dotnet-helper.itemGenerator`, async (invoker: vscode.Uri) => {
-        let start = Date.now();
-        console.log(await doAllTheStuff(invoker));
-        let finish = Date.now();
-        console.log(`It took ${finish - start} ms`);
+export function activate(context: vscode.ExtensionContext) {
 
+    const enableExtension = 'dotnet-helper.enableExtension';
+    const createClass = 'dotnet-helper.createClass';
+    const createEum = 'dotnet-helper.createEnum';
+    const createInterface = 'dotnet-helper.createInterface';
+
+    let enableMyExtension = vscode.commands.registerCommand(enableExtension, () => {
+        console.log('Extension enabled!');
+    });
+
+    let classCreator = vscode.commands.registerCommand(createClass, async (invoker: vscode.Uri) => {
+        let allProjects = updateProjectList();
+        let matches = getMatches(await (allProjects), invoker);
+        let namespace = await findThePerfectNamespace((await matches), invoker);
+        let newFileName = 'Test';
+        if (!newFileName.endsWith('.cs')) {
+            newFileName += '.cs';
+        }
+        let newFilePath = invoker.fsPath + path.sep + newFileName;
+        fs.writeFileSync(newFilePath, `namespace ${namespace}; \n \n`);
+        vscode.commands.executeCommand('vscode.open', vscode.Uri.file(newFilePath));
+        try {
+            vscode.window.activeTextEditor?.insertSnippet(new SnippetString("class ${1:$TM_FILENAME_BASE}"));
+        } catch (error) {
+            console.log(error);
+
+        }
     }
     );
-
-}
-async function doAllTheStuff(invoker: vscode.Uri): Promise<string> {
-    let allProjects = updateProjectList();
-    let allTargets = getMatches(await (allProjects), invoker);
-    var namespace = await findThePerfectNamespace((await allTargets), invoker);
-    return namespace!;
-
+    // context.subscriptions.push(enableMyExtension);
 }
 
+enum ItemType {
+    classItem = 'class',
+    enumItem = 'enum',
+    interfaceItem = 'interface'
+}
 
 // This method is called when the extension is deactivated
 export function deactivate() { }
@@ -58,27 +72,26 @@ async function getMatches(allProjects: string[], invoker: vscode.Uri) {
 }
 
 async function findThePerfectNamespace(allTargets: string[], invoker: vscode.Uri) {
-    let len = (await allTargets).length;
+    let len = (allTargets).length;
     if (len <= 0) {
         console.log(`No csproj found, we're creating an raw namespace lol`);
         let workspaceFolder = vscode.workspace.getWorkspaceFolder(invoker)?.uri.fsPath;
         let invokerPath = invoker.fsPath;
-        return getNamespace(workspaceFolder!, invokerPath);
+        return createNamespace(workspaceFolder!, invokerPath);
     }
     if (len === 1) {
 
-        let bestMatch = await (await allTargets).pop();
+        let bestMatch = (allTargets).pop();
         let invokerPath = invoker.fsPath;
-        return getNamespace(bestMatch!, invokerPath);
+        return createNamespace(bestMatch!, invokerPath);
     }
     else if (len >= 2) {
         vscode.window.showErrorMessage('Nested projects are causing some issues, please resolve');
-        throw Error('Nested namespaces detected!');
+        throw Error(`Nested namespaces detected! Staring at ${allTargets[0]}.`);
     }
 }
 
-async function getNamespace(target: string, invokerPath: string): Promise<string> {
-    let test = await vscode.workspace.findFiles(target + path.sep + '*.csproj');
+async function createNamespace(target: string, invokerPath: string): Promise<string> {
     let dirName = target.replace(folderName, '');
     let almostNamespace = invokerPath.replace(target, '');
     let perfectNamespace = dirName + almostNamespace.replace(separatorsRegex, '.');

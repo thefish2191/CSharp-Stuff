@@ -3,11 +3,14 @@
   "displayName": "Dotnet helper",
   "description": "vs code extension to help dotnet developers do dotnet stuff",
   "version": "0.0.1",
+  "publisher": "TheFish2191",
+  "repository": "https://github.com/thefish2191/DotnetHelper",
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets"
   ],
   "activationEvents": [
     "onLanguage:csharp",
@@ -16,11 +19,20 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "snippets": [
+      {
+        "language": "csharp",
+        "path": "./snippets/snippets.json/"
+      }
+    ],
     "commands": [
       {
-        "command": "dotnet-helper.itemGenerator",
-        "title": "Create Class",
-        "enablement": ""
+        "command": "dotnet-helper.enableExtension",
+        "title": "Enable Dotnet Helper"
+      },
+      {
+        "command": "dotnet-helper.createClass",
+        "title": "Create Class"
       },
       {
         "command": "dotnet-helper.fileLocationSpotter",
@@ -45,13 +57,7 @@
       "newItem": [
         {
           "group": "newClass",
-          "command": "dotnet-helper.itemGenerator"
-        }
-      ],
-      "csOptions": [
-        {
-          "group": "cs",
-          "command": "dotnet-helper.fileLocationSpotter"
+          "command": "dotnet-helper.createClass"
         }
       ],
       "explorer/context": [
