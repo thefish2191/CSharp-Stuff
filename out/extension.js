@@ -1,75 +1,72 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ItemInfo = exports.deactivate = exports.activate = void 0;
+exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
+const path = require("path");
 let rootDir;
-const fileNameRex = /(([/\\][\w\d\s\-\_\(\)\,\=\;]+)\.*([\w\d])*)$/gm;
-const fileExNameRex = /\.+([\w\d])+$/gm;
-const folderRegexFront = /^([/\\])([\w\d\s\-\_\(\)\,\=\;]+)/gm;
-let projectsDirs;
-let projectsDirsNoFilename;
-let projectsDirsNoNothing;
+// const fileNameRex = /(([/\\][\w\d\s\-\_\(\)\,\=\;]+)\.*([\w\d])*)$/gm; // testing a new one
+const fileNameRex = /([\\\/]){1}([^\/\\]*.)$/gm;
+const separatorsRegex = /[\/\\]/gm;
+const folderName = /^(.*)([\/\\])/gm;
 async function activate(context) {
-    console.clear();
-    // register the updater to the event on did create files
-    // vscode.workspace.onDidCreateFiles(() => updateProjectList());
-    // Do the other stuff
     let itemGenerator = vscode.commands.registerCommand(`dotnet-helper.itemGenerator`, async (invoker) => {
-        vscode.workspace.findFiles('**/*.csproj')
-            .then((dir) => {
-            projectsDirs = new Array();
-            dir.forEach(element => {
-                projectsDirs.push(element.fsPath);
-            });
-        });
-        console.log(`Deleting filenames`);
-        projectsDirsNoFilename = new Array();
-        projectsDirs.forEach(element => {
-            projectsDirs.forEach((element) => {
-                let temp = element.replace(fileExNameRex, '');
-                console.log(temp);
-                projectsDirsNoFilename.push(temp);
-            });
-            console.log((`Deleting external path`));
-            projectsDirsNoNothing = new Array();
-            projectsDirsNoFilename.forEach(element => {
-                let temp = element.replace(folderRegexFront, '');
-                projectsDirsNoNothing.push(temp);
-                console.log(temp);
-            });
-            // split incoming path in individual folders
-            // checks if the first matches in any string in the ws list
-            // if not, no root project
-            // if yes, add the next folder to the slice, and repeat
-            let pathFromClick = invoker.fsPath;
-            rootDir = vscode.workspace.getWorkspaceFolder(invoker)?.uri.fsPath;
-            // Attempt to find the perfect namespace
-            let lastMatch;
-            /*
-            projectsDirsNoNothing.forEach(element => {
-                let temp = element.split(folderRegexFront);
-            });*/
-        });
+        let start = Date.now();
+        console.log(await doAllTheStuff(invoker));
+        let finish = Date.now();
+        console.log(`It took ${finish - start} ms`);
     });
 }
 exports.activate = activate;
+async function doAllTheStuff(invoker) {
+    let allProjects = updateProjectList();
+    let allTargets = getMatches(await (allProjects), invoker);
+    var namespace = await findThePerfectNamespace((await allTargets), invoker);
+    return namespace;
+}
 // This method is called when the extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;
-class ItemInfo {
-    constructor(item) {
-        let tempCallerUri = vscode.Uri.file(item.fsPath).fsPath;
-        let tempWSFolder = vscode.Uri.file(vscode.workspace.getWorkspaceFolder(item).uri.fsPath).fsPath;
-        let tempDir = tempCallerUri.replace(tempWSFolder, '');
-        let nameWithEx = item.fsPath.match(fileNameRex)?.toString();
-        let nameNoEx = nameWithEx?.replace(fileExNameRex, '');
-        this.rootFolderUri = vscode.workspace.getWorkspaceFolder(item).uri;
-        this.rootFolderName = vscode.workspace.getWorkspaceFolder(item).name;
-        this.callerUri = vscode.Uri.file(item.fsPath);
-        this.callerNameWithEx = item.fsPath.match(fileNameRex)?.toString();
-        this.callerNameNoEx = nameNoEx;
-        this.callerDir = tempDir;
+async function updateProjectList() {
+    let allProjectsDirs = [];
+    let projects = await vscode.workspace.findFiles('**/*.csproj');
+    projects.forEach(element => {
+        allProjectsDirs.push(element.fsPath);
+    });
+    return allProjectsDirs;
+}
+async function getMatches(allProjects, invoker) {
+    let possibleTarget = [];
+    allProjects.forEach(element => {
+        let temp = element.replace(fileNameRex, '');
+        if (invoker.fsPath.startsWith(temp)) {
+            possibleTarget.push(temp);
+        }
+    });
+    return possibleTarget;
+}
+async function findThePerfectNamespace(allTargets, invoker) {
+    let len = (await allTargets).length;
+    if (len <= 0) {
+        console.log(`No csproj found, we're creating an raw namespace lol`);
+        let workspaceFolder = vscode.workspace.getWorkspaceFolder(invoker)?.uri.fsPath;
+        let invokerPath = invoker.fsPath;
+        return getNamespace(workspaceFolder, invokerPath);
+    }
+    if (len === 1) {
+        let bestMatch = await (await allTargets).pop();
+        let invokerPath = invoker.fsPath;
+        return getNamespace(bestMatch, invokerPath);
+    }
+    else if (len >= 2) {
+        vscode.window.showErrorMessage('Nested projects are causing some issues, please resolve');
+        throw Error('Nested namespaces detected!');
     }
 }
-exports.ItemInfo = ItemInfo;
+async function getNamespace(target, invokerPath) {
+    let test = await vscode.workspace.findFiles(target + path.sep + '*.csproj');
+    let dirName = target.replace(folderName, '');
+    let almostNamespace = invokerPath.replace(target, '');
+    let perfectNamespace = dirName + almostNamespace.replace(separatorsRegex, '.');
+    return perfectNamespace;
+}
 //# sourceMappingURL=extension.js.map
