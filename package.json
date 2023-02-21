@@ -10,14 +10,17 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:csharp",
+    "workspaceContains:*.cs",
+    "workspaceContains:*.csproj"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "dotnet-helper.itemGenerator",
-        "title": "Create Class"
+        "title": "Create Class",
+        "enablement": ""
       },
       {
         "command": "dotnet-helper.fileLocationSpotter",
