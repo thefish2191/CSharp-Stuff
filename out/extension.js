@@ -4,7 +4,6 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
-const vscode_1 = require("vscode");
 // const fileNameRex = /(([/\\][\w\d\s\-\_\(\)\,\=\;]+)\.*([\w\d])*)$/gm; // testing a new one
 const fileNameRex = /([\\\/]){1}([^\/\\]*.)$/gm;
 const separatorsRegex = /[\/\\]/gm;
@@ -26,10 +25,9 @@ function activate(context) {
             newFileName += '.cs';
         }
         let newFilePath = invoker.fsPath + path.sep + newFileName;
-        fs.writeFileSync(newFilePath, `namespace ${namespace}; \n \n`);
+        fs.writeFileSync(newFilePath, `namespace ${namespace};\n\nclass ${newFileName.replace('.cs', '')}\n{\n\t\n}`);
         vscode.commands.executeCommand('vscode.open', vscode.Uri.file(newFilePath));
         try {
-            vscode.window.activeTextEditor?.insertSnippet(new vscode_1.SnippetString("class ${1:$TM_FILENAME_BASE}"));
         }
         catch (error) {
             console.log(error);

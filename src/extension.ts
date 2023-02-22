@@ -29,13 +29,11 @@ export function activate(context: vscode.ExtensionContext) {
             newFileName += '.cs';
         }
         let newFilePath = invoker.fsPath + path.sep + newFileName;
-        fs.writeFileSync(newFilePath, `namespace ${namespace}; \n \n`);
+        fs.writeFileSync(newFilePath, `namespace ${namespace};\n\nclass ${newFileName.replace('.cs', '')}\n{\n\t\n}`);
         vscode.commands.executeCommand('vscode.open', vscode.Uri.file(newFilePath));
         try {
-            vscode.window.activeTextEditor?.insertSnippet(new SnippetString("class ${1:$TM_FILENAME_BASE}"));
         } catch (error) {
             console.log(error);
-
         }
     }
     );

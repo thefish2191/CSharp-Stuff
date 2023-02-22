@@ -1,10 +1,20 @@
 {
-    "Class": {
-        "prefix": "class",
+    "ForX": {
+        "prefix": "For x",
         "body": [
-            "class ${1:$TM_FILENAME_BASE}",
+            "for (int ${1:x} = 0; ${1:x} < ${2:length}; ${1:x}++)",
             "{",
-            "\t$0",
+            "\t${TM_SELECTED_TEXT}$0",
+            "}"
+        ],
+        "description": "Class"
+    },
+    "ForY": {
+        "prefix": "For x",
+        "body": [
+            "for (int ${1:y} = 0; ${1:y} < ${2:length}; ${1:y}++)",
+            "{",
+            "\t${TM_SELECTED_TEXT}$0",
             "}"
         ],
         "description": "Class"
