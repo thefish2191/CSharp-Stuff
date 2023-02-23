@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "publisher": "TheFish2191",
   "repository": "https://github.com/thefish2191/DotnetHelper",
+  "icon": "https://github.com/thefish2191/DotnetHelper/blob/AddingItemTemplates/resources/icons8-cascade-64.png",
   "engines": {
     "vscode": "^1.75.0"
   },

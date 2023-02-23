@@ -3,12 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const path = require("path");
-const fs = require("fs");
+const vscode_1 = require("vscode");
 // const fileNameRex = /(([/\\][\w\d\s\-\_\(\)\,\=\;]+)\.*([\w\d])*)$/gm; // testing a new one
 const fileNameRex = /([\\\/]){1}([^\/\\]*.)$/gm;
 const separatorsRegex = /[\/\\]/gm;
 const folderName = /^(.*)([\/\\])/gm;
 function activate(context) {
+    let allProjects = updateProjectList();
     const enableExtension = 'dotnet-helper.enableExtension';
     const createClass = 'dotnet-helper.createClass';
     const createEum = 'dotnet-helper.createEnum';
@@ -17,21 +18,28 @@ function activate(context) {
         console.log('Extension enabled!');
     });
     let classCreator = vscode.commands.registerCommand(createClass, async (invoker) => {
-        let allProjects = updateProjectList();
+        let start = Date.now();
         let matches = getMatches(await (allProjects), invoker);
         let namespace = await findThePerfectNamespace((await matches), invoker);
-        let newFileName = 'Test';
+        let newFileName = await vscode.window.showInputBox({
+            title: 'Creating a new item',
+            ignoreFocusOut: false,
+            placeHolder: 'Give it a name',
+            prompt: 'Great class names uses letters only!',
+            value: 'MyClass.cs',
+            valueSelection: [0, 7]
+        });
         if (!newFileName.endsWith('.cs')) {
             newFileName += '.cs';
         }
-        let newFilePath = invoker.fsPath + path.sep + newFileName;
-        fs.writeFileSync(newFilePath, `namespace ${namespace};\n\nclass ${newFileName.replace('.cs', '')}\n{\n\t\n}`);
-        vscode.commands.executeCommand('vscode.open', vscode.Uri.file(newFilePath));
-        try {
-        }
-        catch (error) {
-            console.log(error);
-        }
+        let newFilePath = vscode_1.Uri.file(invoker.fsPath + path.sep + newFileName);
+        vscode.workspace.fs.writeFile(newFilePath, new Uint8Array(Buffer.from(`namespace ${namespace};\n\npublic class ${newFileName?.replace('.cs', '')}\n{\n    \n}\n`)))
+            .then(() => {
+            vscode.commands.executeCommand('vscode.open', newFilePath).then(() => {
+                vscode.commands.executeCommand('cursorMove', 'nextBlankLine');
+            });
+        });
+        console.log(Date.now() - start);
     });
     // context.subscriptions.push(enableMyExtension);
 }
@@ -41,6 +49,7 @@ var ItemType;
     ItemType["classItem"] = "class";
     ItemType["enumItem"] = "enum";
     ItemType["interfaceItem"] = "interface";
+    ItemType["globalUsingItem"] = "globalUsingItem";
 })(ItemType || (ItemType = {}));
 // This method is called when the extension is deactivated
 function deactivate() { }

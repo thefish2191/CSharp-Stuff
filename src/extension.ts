@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import path = require('path');
 import * as fs from 'fs';
-import { SnippetString } from 'vscode';
+import { Uri } from 'vscode';
 
 
 // const fileNameRex = /(([/\\][\w\d\s\-\_\(\)\,\=\;]+)\.*([\w\d])*)$/gm; // testing a new one
@@ -11,6 +11,8 @@ const folderName = /^(.*)([\/\\])/gm;
 
 export function activate(context: vscode.ExtensionContext) {
 
+
+    let allProjects = updateProjectList();
     const enableExtension = 'dotnet-helper.enableExtension';
     const createClass = 'dotnet-helper.createClass';
     const createEum = 'dotnet-helper.createEnum';
@@ -21,20 +23,31 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     let classCreator = vscode.commands.registerCommand(createClass, async (invoker: vscode.Uri) => {
-        let allProjects = updateProjectList();
+        let start = Date.now();
         let matches = getMatches(await (allProjects), invoker);
         let namespace = await findThePerfectNamespace((await matches), invoker);
-        let newFileName = 'Test';
-        if (!newFileName.endsWith('.cs')) {
+        let newFileName = await vscode.window.showInputBox({
+            title: 'Creating a new item',
+            ignoreFocusOut: false,
+            placeHolder: 'Give it a name',
+            prompt: 'Great class names uses letters only!',
+            value: 'MyClass.cs',
+            valueSelection: [0, 7]
+        });
+        if (!newFileName!.endsWith('.cs')) {
             newFileName += '.cs';
         }
-        let newFilePath = invoker.fsPath + path.sep + newFileName;
-        fs.writeFileSync(newFilePath, `namespace ${namespace};\n\nclass ${newFileName.replace('.cs', '')}\n{\n\t\n}`);
-        vscode.commands.executeCommand('vscode.open', vscode.Uri.file(newFilePath));
-        try {
-        } catch (error) {
-            console.log(error);
-        }
+        let newFilePath = Uri.file(invoker.fsPath + path.sep + newFileName);
+        vscode.workspace.fs.writeFile(newFilePath, new Uint8Array(Buffer.from(
+            `namespace ${namespace};\n\npublic class ${newFileName?.replace('.cs', '')}\n{\n    \n}\n`
+        )))
+            .then(() => {
+                vscode.commands.executeCommand('vscode.open', newFilePath).then(() => {
+                    vscode.commands.executeCommand('cursorMove', 'nextBlankLine');
+                });
+            });
+        console.log(Date.now() - start);
+
     }
     );
     // context.subscriptions.push(enableMyExtension);
@@ -43,7 +56,8 @@ export function activate(context: vscode.ExtensionContext) {
 enum ItemType {
     classItem = 'class',
     enumItem = 'enum',
-    interfaceItem = 'interface'
+    interfaceItem = 'interface',
+    globalUsingItem = 'globalUsingItem'
 }
 
 // This method is called when the extension is deactivated
