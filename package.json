@@ -1,11 +1,11 @@
 {
-  "name": "dotnet-helper",
-  "displayName": "Dotnet helper",
-  "description": "vs code extension to help dotnet developers do dotnet stuff",
+  "name": "csharp-stuff",
+  "displayName": "C# Stuff",
+  "description": "Helps to do C# stuff",
   "version": "0.0.1",
   "publisher": "TheFish2191",
   "repository": "https://github.com/thefish2191/DotnetHelper",
-  "icon": "https://github.com/thefish2191/DotnetHelper/blob/AddingItemTemplates/resources/icons8-cascade-64.png",
+  "icon": "/resources/icons8-modular-64.png",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -15,8 +15,8 @@
   ],
   "activationEvents": [
     "onLanguage:csharp",
-    "workspaceContains:*.cs",
-    "workspaceContains:*.csproj"
+    "workspaceContains:**/*.cs",
+    "workspaceContains:**/*.csproj"
   ],
   "main": "./out/extension.js",
   "contributes": {

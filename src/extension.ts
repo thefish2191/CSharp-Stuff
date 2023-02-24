@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import path = require('path');
-import * as fs from 'fs';
 import { Uri } from 'vscode';
 
 
@@ -8,8 +7,11 @@ import { Uri } from 'vscode';
 const fileNameRex = /([\\\/]){1}([^\/\\]*.)$/gm;
 const separatorsRegex = /[\/\\]/gm;
 const folderName = /^(.*)([\/\\])/gm;
+const extensionName = 'csharp-stuff';
+
 
 export function activate(context: vscode.ExtensionContext) {
+    console.log(`${extensionName} is now running!`);
 
 
     let allProjects = updateProjectList();
