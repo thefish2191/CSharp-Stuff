@@ -1,58 +1,76 @@
 import * as vscode from 'vscode';
 import path = require('path');
 import { Uri } from 'vscode';
+import { FileSpotter } from './headquarters/FileSpotter';
 
 
-// const fileNameRex = /(([/\\][\w\d\s\-\_\(\)\,\=\;]+)\.*([\w\d])*)$/gm; // testing a new one
-const fileNameRex = /([\\\/]){1}([^\/\\]*.)$/gm;
+
+const removeFolderName = /^(.*)([\/\\])/gm;
 const separatorsRegex = /[\/\\]/gm;
-const folderName = /^(.*)([\/\\])/gm;
+
+// A pattern is used to find files that matches it
+const csprojPattern = '**/*.csproj'; // This pattern matches all files, in the root folder and inside subfolders
+
+// Extension related, to avoid manual changes
 const extensionName = 'csharp-stuff';
+const enableExtension = `${extensionName}.enableExtension`;
+const createClass = `${extensionName}.createClass`;
+const createEum = `${extensionName}.createEnum`;
+const createInterface = `${extensionName}.createInterface`;
 
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
     console.log(`${extensionName} is now running!`);
 
+    // update the project list in the very start of the extension
+    let allProjects = await FileSpotter.findFiles(csprojPattern);
 
-    let allProjects = updateProjectList();
-    const enableExtension = 'dotnet-helper.enableExtension';
-    const createClass = 'dotnet-helper.createClass';
-    const createEum = 'dotnet-helper.createEnum';
-    const createInterface = 'dotnet-helper.createInterface';
+    let classCreator = vscode.commands.registerCommand(createClass, async (invoker: Uri) => {
+        try {
 
-    let enableMyExtension = vscode.commands.registerCommand(enableExtension, () => {
-        console.log('Extension enabled!');
-    });
+            // Finds all the projects dirs that exist in the allProjects[], than matches the path to the destiny of the new file, in other words, the parent project of the new file.
+            let targetProjects = await FileSpotter.compareAndReturn(allProjects, invoker.fsPath);
 
-    let classCreator = vscode.commands.registerCommand(createClass, async (invoker: vscode.Uri) => {
-        let start = Date.now();
-        let matches = getMatches(await (allProjects), invoker);
-        let namespace = await findThePerfectNamespace((await matches), invoker);
-        let newFileName = await vscode.window.showInputBox({
-            title: 'Creating a new item',
-            ignoreFocusOut: false,
-            placeHolder: 'Give it a name',
-            prompt: 'Great class names uses letters only!',
-            value: 'MyClass.cs',
-            valueSelection: [0, 7]
-        });
-        if (!newFileName!.endsWith('.cs')) {
-            newFileName += '.cs';
-        }
-        let newFilePath = Uri.file(invoker.fsPath + path.sep + newFileName);
-        vscode.workspace.fs.writeFile(newFilePath, new Uint8Array(Buffer.from(
-            `namespace ${namespace};\n\npublic class ${newFileName?.replace('.cs', '')}\n{\n    \n}\n`
-        )))
-            .then(() => {
-                vscode.commands.executeCommand('vscode.open', newFilePath).then(() => {
-                    vscode.commands.executeCommand('cursorMove', 'nextBlankLine');
-                });
+            let newFileName: string = await vscode.window.showInputBox({
+                title: 'Creating a new item',
+                ignoreFocusOut: true,
+                placeHolder: 'Give it a name',
+                prompt: 'Great class names uses letters only!',
+                value: 'MyClass.cs',
+                valueSelection: [0, 7]
             });
-        console.log(Date.now() - start);
+            console.log(newFileName);
 
+
+            switch (targetProjects.length) {
+                case targetProjects.length = 0:
+                    console.log('cero');
+                    break;
+                case targetProjects.length = 1:
+                    console.log('one');
+                    break;
+                default:
+                    console.log('None');
+                    break;
+            }
+
+            let namespace = await findThePerfectNamespace(targetProjects, invoker);
+
+
+            if (!newFileName!.endsWith('.cs')) {
+                newFileName += '.cs';
+            }
+
+            let newFilePath = Uri.file(invoker.fsPath + path.sep + newFileName);
+            vscode.workspace.fs.writeFile(newFilePath, new Uint8Array(Buffer.from(
+                `namespace ${namespace};\n\npublic class ${newFileName?.replace('.cs', '')}\n{\n    \n}\n`
+            )));
+        } catch (error) {
+            console.log(error);
+        }
     }
     );
-    // context.subscriptions.push(enableMyExtension);
+    // context.subscriptions.push();
 }
 
 enum ItemType {
@@ -60,29 +78,6 @@ enum ItemType {
     enumItem = 'enum',
     interfaceItem = 'interface',
     globalUsingItem = 'globalUsingItem'
-}
-
-// This method is called when the extension is deactivated
-export function deactivate() { }
-
-async function updateProjectList() {
-    let allProjectsDirs: string[] = [];
-    let projects = await vscode.workspace.findFiles('**/*.csproj');
-    projects.forEach(element => {
-        allProjectsDirs.push(element.fsPath);
-    });
-    return allProjectsDirs;
-}
-
-async function getMatches(allProjects: string[], invoker: vscode.Uri) {
-    let possibleTarget: string[] = [];
-    allProjects.forEach(element => {
-        let temp = element.replace(fileNameRex, '');
-        if (invoker.fsPath.startsWith(temp)) {
-            possibleTarget.push(temp);
-        }
-    });
-    return possibleTarget;
 }
 
 async function findThePerfectNamespace(allTargets: string[], invoker: vscode.Uri) {
@@ -106,7 +101,7 @@ async function findThePerfectNamespace(allTargets: string[], invoker: vscode.Uri
 }
 
 async function createNamespace(target: string, invokerPath: string): Promise<string> {
-    let dirName = target.replace(folderName, '');
+    let dirName = target.replace(removeFolderName, '');
     let almostNamespace = invokerPath.replace(target, '');
     let perfectNamespace = dirName + almostNamespace.replace(separatorsRegex, '.');
     return perfectNamespace;

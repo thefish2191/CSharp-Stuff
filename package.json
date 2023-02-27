@@ -28,16 +28,12 @@
     ],
     "commands": [
       {
-        "command": "dotnet-helper.enableExtension",
-        "title": "Enable Dotnet Helper"
+        "command": "csharp-stuff.enableExtension",
+        "title": "Enable C# extension"
       },
       {
-        "command": "dotnet-helper.createClass",
+        "command": "csharp-stuff.createClass",
         "title": "Create Class"
-      },
-      {
-        "command": "dotnet-helper.fileLocationSpotter",
-        "title": "Locate this file"
       }
     ],
     "submenus": [
@@ -58,7 +54,7 @@
       "newItem": [
         {
           "group": "newClass",
-          "command": "dotnet-helper.createClass"
+          "command": "csharp-stuff.createClass"
         }
       ],
       "explorer/context": [
