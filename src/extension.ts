@@ -1,3 +1,4 @@
+import { Namespacer } from './headquarters/Namespacer';
 import { PoliceOfficer } from './headquarters/PoliceOfficer';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
@@ -28,21 +29,26 @@ export async function activate(context: vscode.ExtensionContext) {
 
     // ! Warning: This method is not mean to be called from the command pallette(yet).
     let classCreator = vscode.commands.registerCommand(createClass, async (invoker: Uri) => {
-        await updateProjects();
-        let parentProjects = await Orphanage.findParents(allProjectsPaths, invoker.fsPath);
-        let thisItemName = await PoliceOfficer.askUserForAName(ItemType.classItem);
+        let invokerDir = invoker.fsPath!;
+        let relativeInvokerDir = invoker.fsPath.replace(vscode.workspace.getWorkspaceFolder(invoker)?.uri.fsPath!, '');
 
-        console.log(`New item name:`);
-        console.log(thisItemName);
+        await updateProjects();
+
+        let parentProjects = await Orphanage.findParents(allProjectsPaths, invokerDir);
+        // let thisItemName = await PoliceOfficer.askUserForAName(ItemType.interfaceItem);
 
         if (Orphanage.hasNoParent(parentProjects)) {
-            vscode.window.showInformationMessage(`Creating a raw namespace`);
+            console.log(Namespacer.dirToNamespace(relativeInvokerDir));
             // TODO: Create a raw namespace
         }
         else if (Orphanage.hasOnlyOneParent(parentProjects)) {
             vscode.window.showInformationMessage(`Creating namespace based on: ${FileSpotter.getFileInfo(parentProjects[0]).fileNameNoExt}`);
-            // Generate fancy namespace
             // TODO: Create a fancy namespace
+            // parent filename + (invoker path)
+            let parentInfo = FileSpotter.getFileInfo(parentProjects[0]);
+            let temp = parentInfo.fileNameNoExt + invokerDir.replace(parentInfo.pathDir, '');
+            temp = Namespacer.dirToNamespace(temp);
+            console.log(temp);
         }
         else if (Orphanage.hasMultipleParents(parentProjects)) {
             vscode.window.showErrorMessage(`The destination directory has ${parentProjects.length} parent projects. Nesting projects are not supported by this extension, we can't decide the correct namespace`);
@@ -55,8 +61,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
 
 export enum ItemType {
-    classItem = 'class',
-    enumItem = 'enum',
-    interfaceItem = 'interface',
-    globalUsingItem = 'globalUsingItem'
+    classItem = 'Class',
+    enumItem = 'Enum',
+    interfaceItem = 'Interface',
+    globalUsingItem = 'GlobalUsing'
 }

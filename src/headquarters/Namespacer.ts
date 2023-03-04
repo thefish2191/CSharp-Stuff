@@ -1,9 +1,25 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 
 const separatorsRegex = /[\/\\]/gm;
 
 // TODO: Rebuild the namespace generator using the new file spotter class
 export class Namespacer {
+    static dirToNamespace(dir: string): string {
+        let temp = dir;
+        if (temp.startsWith(path.sep)) {
+            temp = temp.substring(1);
+        }
+        return temp.replace(separatorsRegex, '.');
+    }
+    static extractDir(parent: string, child: string): string {
+        let temp = child.replace(parent, '');
+        return temp;
+    }
+    static extractNamespace(parent: string, child: string): string {
+        let temp = child.replace(parent, '');
+        return temp;
+    }
     /*
     async function findThePerfectNamespace(allTargets: string[], invoker: vscode.Uri) {
         let len = (allTargets).length;
