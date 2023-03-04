@@ -1,7 +1,8 @@
+import { PoliceOfficer } from './headquarters/PoliceOfficer';
 import * as vscode from 'vscode';
-import path = require('path');
 import { Uri } from 'vscode';
 import { FileSpotter } from './headquarters/FileSpotter';
+import { Orphanage } from './headquarters/Orphanage';
 
 
 
@@ -12,77 +13,48 @@ const csprojPattern = '**/*.csproj';
 
 // Extension related, to avoid manual changes
 const extensionName = 'csharp-stuff';
-// Commands names
+// Command names
 const createClass = `${extensionName}.createClass`;
 
 
 
 // update the project list in the very start of the extension
-let allProjectsPaths: string[];
-async function updateProjects() {
+let allProjectsPaths: string[] = [];
+export async function updateProjects() {
     allProjectsPaths = await FileSpotter.findFilesThanMatchPattern(csprojPattern);
-
 }
 export async function activate(context: vscode.ExtensionContext) {
     console.log(`${extensionName} is now running!`);
 
-    updateProjects();
+    // ! Warning: This method is not mean to be called from the command pallette(yet).
     let classCreator = vscode.commands.registerCommand(createClass, async (invoker: Uri) => {
-        if (allProjectsPaths.length < 1) {
-            updateProjects;
+        await updateProjects();
+        let parentProjects = await Orphanage.findParents(allProjectsPaths, invoker.fsPath);
+        let thisItemName = await PoliceOfficer.askUserForAName(ItemType.classItem);
+
+        console.log(`New item name:`);
+        console.log(thisItemName);
+
+        if (Orphanage.hasNoParent(parentProjects)) {
+            vscode.window.showInformationMessage(`Creating a raw namespace`);
+            // TODO: Create a raw namespace
         }
-        else if (allProjectsPaths.length >= 1) {
-            let parentProjects = await FileSpotter.searchParentProjects(allProjectsPaths, invoker.fsPath);
-            if (parentProjects.length <= 0) {
-                vscode.window.showErrorMessage(`No parent project found!`);
-            }
-            else if (parentProjects.length > 1) {
-                vscode.window.showErrorMessage(`Nested project structure detected!`);
-            }
-            else if (parentProjects.length === 1) {
-                // TODO: do the good stuff here
-                console.log(FileSpotter.getFileInfo(parentProjects[0]));
-            }
+        else if (Orphanage.hasOnlyOneParent(parentProjects)) {
+            vscode.window.showInformationMessage(`Creating namespace based on: ${FileSpotter.getFileInfo(parentProjects[0]).fileNameNoExt}`);
+            // Generate fancy namespace
+            // TODO: Create a fancy namespace
         }
-        /*
-        try {
-            // Finds all the projects dirs that exist in the allProjects[], than matches the path to the destiny of the new file, in other words, the parent project of the new file.
-            let newFileName: string | undefined
-                = await vscode.window.showInputBox({
-                    title: 'Creating a new item',
-                    ignoreFocusOut: false,
-                    placeHolder: 'Give it a name',
-                    prompt: 'Great class names uses letters only!',
-                    value: 'MyClass.cs',
-                    valueSelection: [0, 7]
-                });
-
-            if (newFileName === undefined) {
-                newFileName = 'NewItem';
-            }
-            console.log(newFileName);
-
-            let namespace = 'Hello'; // await findThePerfectNamespace(, invoker);
-
-
-            if (!newFileName!.endsWith('.cs')) {
-                newFileName += '.cs';
-            }
-
-            let newFilePath = Uri.file(invoker.fsPath + path.sep + newFileName);
-            vscode.workspace.fs.writeFile(newFilePath, new Uint8Array(Buffer.from(
-                `namespace ${namespace};\n\npublic class ${newFileName?.replace('.cs', '')}\n{\n    \n}\n`
-            )));
-        } catch (error) {
-            console.log(error);
+        else if (Orphanage.hasMultipleParents(parentProjects)) {
+            vscode.window.showErrorMessage(`The destination directory has ${parentProjects.length} parent projects. Nesting projects are not supported by this extension, we can't decide the correct namespace`);
         }
-        */
     }
     );
     // context.subscriptions.push();
 }
 
-enum ItemType {
+
+
+export enum ItemType {
     classItem = 'class',
     enumItem = 'enum',
     interfaceItem = 'interface',

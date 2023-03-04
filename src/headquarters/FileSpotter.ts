@@ -22,7 +22,7 @@ export class FileSpotter {
         let fileInfo: FileInfo = { fileName: elementName, fileNameNoExt: elementNameNoExt, fullPath: elementPath, pathDir: folderDir };
         return fileInfo;
     }
-    static async searchParentProjects(knownProjects: string[], targetDestination: string) {
+    static searchParentProjects(knownProjects: string[], targetDestination: string) {
         let matchProjects: string[] = [];
         knownProjects.forEach(item => {
             let tempDir = item.replace(fileNameRex, '');
