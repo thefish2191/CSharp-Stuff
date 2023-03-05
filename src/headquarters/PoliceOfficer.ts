@@ -38,4 +38,7 @@ export class PoliceOfficer {
             console.log(element);
         });
     }
+    static reportFileExit() {
+        vscode.window.showErrorMessage(`There is already an item with that name! Please try again with another filename`);
+    }
 }

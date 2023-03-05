@@ -22,7 +22,7 @@ const csprojPattern = '**/*.csproj';
 
 
 export class Namespacer {
-    static async nameSpaceIt(clicker: Uri): Promise<string> {
+    static async generateNamespace(clicker: Uri): Promise<string> {
         let allProjectsPaths = await FileSpotter.findFilesThanMatchPattern(csprojPattern);
         let rootFolderName = vscode.workspace.getWorkspaceFolder(clicker)?.name!;
         // full path where click was made
