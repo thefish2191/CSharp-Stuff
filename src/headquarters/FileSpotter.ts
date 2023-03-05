@@ -1,9 +1,9 @@
 import { GlobPattern } from 'vscode';
 import * as vscode from 'vscode';
 
-const fileNameRex = /([\\\/]){1}([^\/\\]*.)$/gm;
-const folderNameRex = /^(.*)([\/\\])/gm;
-const fileExtensionRegex = /[.]([\w\d]*)$/gm;
+export const fileNameRex = /([\\\/]){1}([^\/\\]*.)$/gm;
+export const folderNameRex = /^(.*)([\/\\])/gm;
+export const fileExtensionRegex = /[.]([\w\d]*)$/gm;
 
 export class FileSpotter {
     static async findFilesThanMatchPattern(pattern: GlobPattern) {
@@ -14,23 +14,13 @@ export class FileSpotter {
         });
         return matchesDirs;
     }
-    static getFileInfo(dirsToGather: string): FileInfo {
-        let elementPath = dirsToGather;
-        let elementName = dirsToGather.replace(folderNameRex, '');
+    static getFileInfo(filePath: string): FileInfo {
+        let elementPath = filePath;
+        let elementName = filePath.replace(folderNameRex, '');
         let elementNameNoExt = elementName.replace(fileExtensionRegex, '');
-        let folderDir = dirsToGather.replace(fileNameRex, '');
+        let folderDir = filePath.replace(fileNameRex, '');
         let fileInfo: FileInfo = { fileName: elementName, fileNameNoExt: elementNameNoExt, fullPath: elementPath, pathDir: folderDir };
         return fileInfo;
-    }
-    static searchParentProjects(knownProjects: string[], targetDestination: string) {
-        let matchProjects: string[] = [];
-        knownProjects.forEach(item => {
-            let tempDir = item.replace(fileNameRex, '');
-            if (targetDestination.startsWith(tempDir)) {
-                matchProjects.push(item);
-            }
-        });
-        return matchProjects;
     }
 }
 
@@ -41,9 +31,9 @@ export class FileSpotter {
  * @param fullPath The file path in disk, including name and extension.
  * @param pathDir The parent folder of the file.
  */
-interface FileInfo {
+export interface FileInfo {
     fileName: string,
     fileNameNoExt: string,
     fullPath: string,
-    pathDir: string,
+    pathDir: string
 }
