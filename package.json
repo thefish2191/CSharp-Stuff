@@ -1,36 +1,53 @@
 {
-  "name": "dotnet-helper",
-  "displayName": "Dotnet helper",
-  "description": "vs code extension to help dotnet developers do dotnet stuff",
+  "name": "csharp-stuff",
+  "displayName": "C# Stuff",
+  "description": "Helps to do C# stuff",
   "version": "0.0.1",
+  "publisher": "TheFish2191",
+  "repository": "https://github.com/thefish2191/DotnetHelper",
+  "icon": "/resources/icons8-modular-64.png",
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets"
   ],
   "activationEvents": [
     "onLanguage:csharp",
-    "workspaceContains:*.cs",
-    "workspaceContains:*.csproj"
+    "workspaceContains:**/*.cs",
+    "workspaceContains:**/*.csproj"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "snippets": [
+      {
+        "language": "csharp",
+        "path": "./snippets/snippets.json/"
+      }
+    ],
     "commands": [
       {
-        "command": "dotnet-helper.itemGenerator",
-        "title": "Create Class",
-        "enablement": ""
+        "command": "csharp-stuff.createClass",
+        "title": "Create Class"
       },
       {
-        "command": "dotnet-helper.fileLocationSpotter",
-        "title": "Locate this file"
+        "command": "csharp-stuff.createStruct",
+        "title": "Create Struct"
+      },
+      {
+        "command": "csharp-stuff.createEnum",
+        "title": "Create Enum"
+      },
+      {
+        "command": "csharp-stuff.createInterface",
+        "title": "Create Interface"
       }
     ],
     "submenus": [
       {
         "id": "newItem",
-        "label": "Get namespace"
+        "label": "Create Item"
       },
       {
         "id": "csOptions",
@@ -44,14 +61,20 @@
     "menus": {
       "newItem": [
         {
-          "group": "newClass",
-          "command": "dotnet-helper.itemGenerator"
-        }
-      ],
-      "csOptions": [
+          "group": "newCSItem",
+          "command": "csharp-stuff.createClass"
+        },
         {
-          "group": "cs",
-          "command": "dotnet-helper.fileLocationSpotter"
+          "group": "newCSItem",
+          "command": "csharp-stuff.createStruct"
+        },
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createEnum"
+        },
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createInterface"
         }
       ],
       "explorer/context": [
