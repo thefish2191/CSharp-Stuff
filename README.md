@@ -26,25 +26,28 @@ List of features I'm going to add, but I'll take my time.
 ***This function works on folder's context menus:***
 
 - [ ] Add new c# files <details closed> <summary>See more</summary>
-  - [ ] class
-  - [ ] apiController
-  - [ ] controller
-  - [ ] enum
-  - [ ] interface
-  - [ ] struct
-  - [ ] xml
+  - [x] class
+  - [x] struct
+  - [x] enum
+  - [x] interface
+  - [ ] XML
+  - [ ] JSON
+
 </details>
 
 - [ ] Add new Web files <details closed> <summary>See more</summary>
+  - [ ] controller
+  - [ ] apiController
   - [ ] Angular Controller
   - [ ] Angular Directive
   - [ ] Angular Module
+
 </details>  
 
 - [ ] Add new [templates] <details closed> <summary>See more</summary>
   - [ ] console
   - [ ] angular
-  - [ ] classlib
+  - [ ] classLib
   </details>  
 - [ ] Add global using file
 - [ ] Move usings to `GlobalUsings.cs` file
@@ -84,12 +87,13 @@ Groups of importing namespaces for the `GlobalUsings.cs` file
 
 ## Known Issues
 
- All good so far! This extension do all the things checked with ( [x] ) in the [Features](#features) section.
+ All good so far! This extension do all the things checked with ( [x] ) in the [Next to be added](#next-to-be-added) section.
 
 ## Release Notes
 
-**Unreleased**
+### 0.0.1
 
+Added templates for basic C# files: Class, Struct, Enum and Interface!
 
 ### 0.0.0
 
