@@ -1,25 +1,99 @@
 {
-  "name": "dotnet-helper",
-  "displayName": "dotnet-helper",
-  "description": "vs code extension to help dotnet developers do dotnet stuff",
+  "name": "csharp-stuff",
+  "displayName": "C# Stuff",
+  "description": "Helps to do C# stuff",
   "version": "0.0.1",
+  "publisher": "TheFish2191",
+  "repository": "https://github.com/thefish2191/DotnetHelper",
+  "icon": "/resources/icons8-modular-64.png",
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages",
+    "Snippets"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:csharp",
+    "workspaceContains:**/*.cs",
+    "workspaceContains:**/*.csproj"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "snippets": [
+      {
+        "language": "csharp",
+        "path": "./snippets/snippets.json/"
+      }
+    ],
     "commands": [
       {
-        "command": "dotnet-helper.helloWorld",
-        "title": "Hello World"
+        "command": "csharp-stuff.createClass",
+        "title": "Create Class"
+      },
+      {
+        "command": "csharp-stuff.createStruct",
+        "title": "Create Struct"
+      },
+      {
+        "command": "csharp-stuff.createEnum",
+        "title": "Create Enum"
+      },
+      {
+        "command": "csharp-stuff.createInterface",
+        "title": "Create Interface"
       }
-    ]
+    ],
+    "submenus": [
+      {
+        "id": "newItem",
+        "label": "Create Item"
+      },
+      {
+        "id": "csOptions",
+        "label": "cs options"
+      },
+      {
+        "id": "JustRunIt",
+        "label": "Test"
+      }
+    ],
+    "menus": {
+      "newItem": [
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createClass"
+        },
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createStruct"
+        },
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createEnum"
+        },
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createInterface"
+        }
+      ],
+      "explorer/context": [
+        {
+          "submenu": "newItem",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "submenu": "csOptions",
+          "group": "navigation",
+          "when": "resourceExtname==.cs"
+        },
+        {
+          "submenu": "JustRunIt",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -30,16 +104,19 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.75.0",
     "@types/glob": "^8.0.1",
     "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
+    "@types/node": "^16.18.12",
+    "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
+    "@vscode/test-electron": "^2.2.2",
     "eslint": "^8.33.0",
     "glob": "^8.1.0",
     "mocha": "^10.1.0",
-    "typescript": "^4.9.4",
-    "@vscode/test-electron": "^2.2.2"
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "template-file": "^6.0.1"
   }
 }
