@@ -28,18 +28,26 @@
     ],
     "commands": [
       {
-        "command": "csharp-stuff.enableExtension",
-        "title": "Enable C# extension"
-      },
-      {
         "command": "csharp-stuff.createClass",
         "title": "Create Class"
+      },
+      {
+        "command": "csharp-stuff.createStruct",
+        "title": "Create Struct"
+      },
+      {
+        "command": "csharp-stuff.createEnum",
+        "title": "Create Enum"
+      },
+      {
+        "command": "csharp-stuff.createInterface",
+        "title": "Create Interface"
       }
     ],
     "submenus": [
       {
         "id": "newItem",
-        "label": "Get namespace"
+        "label": "Create Item"
       },
       {
         "id": "csOptions",
@@ -53,8 +61,20 @@
     "menus": {
       "newItem": [
         {
-          "group": "newClass",
+          "group": "newCSItem",
           "command": "csharp-stuff.createClass"
+        },
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createStruct"
+        },
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createEnum"
+        },
+        {
+          "group": "newCSItem",
+          "command": "csharp-stuff.createInterface"
         }
       ],
       "explorer/context": [

@@ -1,7 +1,9 @@
+import { ItemType } from './../extension';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import { PoliceOfficer } from './PoliceOfficer';
 import * as path from 'path';
+import { SharpSnippet } from './Snippefy';
 
 export class Worker {
     static async checkIfFileExist(file: Uri): Promise<boolean> {
@@ -21,20 +23,19 @@ export class Worker {
     static createNewFileUri(invoker: Uri, filename: string): Uri {
         return Uri.file(invoker.fsPath + path.sep + filename);
     }
-    static async createNewItem(file: Uri, namespace: string) {
+    static async createNewItem(file: Uri, namesp: string, itemType: ItemType) {
         if (await this.checkIfFileExist(file) === false) {
-            console.log(`The new snippet is: ${this.createSnippet()}`);
-
             try {
                 console.log(`Creating new file!`);
                 await vscode.workspace.fs.writeFile(file, new Uint8Array());
-                vscode.commands.executeCommand('vscode.open', file);
-                vscode.window.activeTextEditor?.insertSnippet(new vscode.SnippetString());
+                vscode.commands.executeCommand('vscode.open', file).then(() => {
+                    vscode.window.activeTextEditor?.insertSnippet(SharpSnippet.createSnippet(itemType, namesp));
+                }
+                );
             } catch (error) {
                 console.log(error);
             }
         }
     }
-    static createSnippet() {
-    }
+
 }
