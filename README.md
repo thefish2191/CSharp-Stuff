@@ -25,13 +25,13 @@ List of features I'm going to add, but I'll take my time.
 
 ***This function works on folder's context menus:***
 
-- [ ] Add new c# files <details closed> <summary>See more</summary>
+- [x] Add new c# files <details closed> <summary>See more</summary>
   - [x] class
   - [x] struct
   - [x] enum
   - [x] interface
-  - [ ] XML
-  - [ ] JSON
+  - [x] XML
+  - [x] JSON
 
 </details>
 
@@ -90,6 +90,10 @@ Groups of importing namespaces for the `GlobalUsings.cs` file
  All good so far! This extension do all the things checked with ( [x] ) in the [Next to be added](#next-to-be-added) section.
 
 ## Release Notes
+
+### 0.0.2
+
+Added xml and json templates
 
 ### 0.0.1
 

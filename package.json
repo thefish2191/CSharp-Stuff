@@ -42,6 +42,14 @@
       {
         "command": "csharp-stuff.createInterface",
         "title": "Create Interface"
+      },
+      {
+        "command": "csharp-stuff.createXML",
+        "title": "Crate XML"
+      },
+      {
+        "command": "csharp-stuff.createJSON",
+        "title": "Crate JSON"
       }
     ],
     "submenus": [
@@ -75,6 +83,14 @@
         {
           "group": "newCSItem",
           "command": "csharp-stuff.createInterface"
+        },
+        {
+          "group": "newDataItem",
+          "command": "csharp-stuff.createXML"
+        },
+        {
+          "group": "newDataItem",
+          "command": "csharp-stuff.createJSON"
         }
       ],
       "explorer/context": [
@@ -82,15 +98,6 @@
           "submenu": "newItem",
           "group": "navigation",
           "when": "explorerResourceIsFolder"
-        },
-        {
-          "submenu": "csOptions",
-          "group": "navigation",
-          "when": "resourceExtname==.cs"
-        },
-        {
-          "submenu": "JustRunIt",
-          "group": "navigation"
         }
       ]
     }

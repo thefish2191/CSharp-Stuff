@@ -1,15 +1,13 @@
 import { extensionName } from './../extension';
 import * as vscode from 'vscode';
 import { ItemType } from '../extension';
-import { strict } from 'assert';
-import { stringify } from 'querystring';
 
 const validItemName = /(\w+_?)/;
 
 export class PoliceOfficer {
     static async askUserForAName(type: ItemType): Promise<string> {
-        let tempItemName = `My${type}.cs`;
-        let dotIndex = tempItemName.length - 3;
+        let fExt = this.decideExt(type);
+        let tempItemName = `My${type + fExt}`;
         let itemName: string | undefined;
         itemName = await vscode.window.showInputBox({
             title: `Creating a new ${type}`,
@@ -17,7 +15,7 @@ export class PoliceOfficer {
             placeHolder: 'Give it a name',
             prompt: `Great ${type} names uses letters and underscores (_) only!`,
             value: tempItemName,
-            valueSelection: [0, dotIndex]
+            valueSelection: [0, tempItemName.length - fExt.length]
         });
         if ((itemName === undefined) || (itemName === '')) {
             itemName = type;
@@ -40,5 +38,15 @@ export class PoliceOfficer {
     }
     static reportFileExit() {
         vscode.window.showErrorMessage(`There is already an item with that name! Please try again with another filename`);
+    }
+    static decideExt(itemType: ItemType): string {
+        switch (itemType) {
+            case 'Xml':
+                return '.xml';
+            case 'JSON':
+                return '.Json';
+            default:
+                return '.cs';
+        }
     }
 }

@@ -7,11 +7,16 @@ import { PoliceOfficer } from './headquarters/PoliceOfficer';
 // Extension related, to avoid manual changes
 export const extensionName = 'csharp-stuff';
 
-// Command names
+// Command names for basic types
 const createClass = `${extensionName}.createClass`;
 const createStruct = `${extensionName}.createStruct`;
 const createEnum = `${extensionName}.createEnum`;
 const createInterface = `${extensionName}.createInterface`;
+
+// Command names for data types
+const createXML = `${extensionName}.createXML`;
+const createJSON = `${extensionName}.createJSON`;
+
 
 export async function activate() {
     let filename: string;
@@ -26,6 +31,9 @@ export async function activate() {
             Worker.createNewItem(filenamePath, namespace, itemType);
         }
     }
+    /**
+     * Basic item creator
+     */
     let classCreator = vscode.commands.registerCommand(createClass, async (clicker: Uri) => {
         await doTheStuff(clicker, ItemType.classItem);
     });
@@ -38,6 +46,12 @@ export async function activate() {
     let interfaceCreator = vscode.commands.registerCommand(createInterface, async (clicker: Uri) => {
         await doTheStuff(clicker, ItemType.interfaceItem);
     });
+    let xmlCreator = vscode.commands.registerCommand(createXML, async (clicker: Uri) => {
+        await doTheStuff(clicker, ItemType.xmlItem);
+    });
+    let jsonCreator = vscode.commands.registerCommand(createJSON, async (clicker: Uri) => {
+        await doTheStuff(clicker, ItemType.jsonItem);
+    });
 
     // context.subscriptions.push();
 }
@@ -46,5 +60,7 @@ export enum ItemType {
     classItem = 'Class',
     enumItem = 'Enum',
     interfaceItem = 'Interface',
-    structItem = 'Struct'
+    structItem = 'Struct',
+    xmlItem = 'Xml',
+    jsonItem = 'JSON',
 }
