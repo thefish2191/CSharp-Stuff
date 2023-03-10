@@ -10,6 +10,10 @@ All notable changes to the "csharp-stuff" extension will be documented in this f
 
  Here is a list of the changes I didn't forget to log:
 
+### 0.0.4
+
+- Attempt to force vscode to play gif.
+
 ### 0.0.3
 
 - Fixed bug that allows user to create items without extension.

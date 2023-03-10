@@ -1,11 +1,13 @@
 # Dotnet-helper
 
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/TheFish2191.csharp-stuff?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=TheFish2191.csharp-stuff)
+
 Adding custom features to vs code, in order to make c# development smoother and easier.  
 Focused on Dotnet 6 and above.
 
 ## Overview
 
-![presentation](https://github.com/thefish2191/CSharp-Stuff/blob/Live/resources/demostration00.gif)
+![presentation](/resources/demostration00.gif)
 
 > You can always request a new feature by just raising a issue at [this](https://github.com/thefish2191/CSharp-Stuff) very repo, or directly to [my twitter](https://twitter.com/thefish2191) account
 
