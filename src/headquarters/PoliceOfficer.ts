@@ -23,6 +23,9 @@ export class PoliceOfficer {
         if (!itemName.match(validItemName)) {
             itemName = type;
         }
+        if (!itemName.endsWith(fExt)) {
+            itemName = itemName + fExt;
+        }
         return itemName;
     }
     static reportMultipleParent(parentProjects: string[]) {

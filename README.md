@@ -5,15 +5,17 @@ Focused on Dotnet 6 and above.
 
 ## Overview
 
- <!-- insert images of this extension using all it's functions -->
+![presentation](https://github.com/thefish2191/CSharp-Stuff/blob/Live/resources/demostration00.gif)
 
-## Upcoming features
+> You can always request a new feature by just raising a issue at [this](https://github.com/thefish2191/CSharp-Stuff) very repo, or directly to [my twitter](https://twitter.com/thefish2191) account
 
-There is a list of the features I'll work in:
+## Features
 
-### Next to be added
+There is a list of the features added, working on, or to be added:
 
-[Sippets and code completion](#snippets-and-code-completion)
+- [ ] [Code completion](#code-completion)
+- [x] [Add new Item](#creating-c-files-top-level)
+- [x] [Sippets](#snippets)
 
 ---
 
@@ -25,7 +27,7 @@ List of features I'm going to add, but I'll take my time.
 
 ***This function works on folder's context menus:***
 
-- [x] Add new c# files <details closed> <summary>See more</summary>
+- [x] Add new c# files
   - [x] class
   - [x] struct
   - [x] enum
@@ -33,18 +35,14 @@ List of features I'm going to add, but I'll take my time.
   - [x] XML
   - [x] JSON
 
-</details>
-
-- [ ] Add new Web files <details closed> <summary>See more</summary>
+- [ ] Add new Web files
   - [ ] controller
   - [ ] apiController
   - [ ] Angular Controller
   - [ ] Angular Directive
   - [ ] Angular Module
 
-</details>  
-
-- [ ] Add new [templates] <details closed> <summary>See more</summary>
+- [ ] Add new [templates]
   - [ ] console
   - [ ] angular
   - [ ] classLib
@@ -67,12 +65,17 @@ List of features I'm going to add, but I'll take my time.
 
 ---
 
-### **Snippets and code completion**
+### **code completion**
+
+- [ ] code completion for `csproj` files
+
+Used to have a reference when editing a `.cjproj` file, I'll use [this](https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview) document from ms' official documentation!
+
+### **Snippets**
 
 Some useful snipers than you may need
 
-- [ ] nested for loops
-- [ ] code completion for `csproj` files
+- [x] nested for loops
 
 ---
 
@@ -85,23 +88,17 @@ There are no requirements so far.
 `contributes.configuration`  
 Groups of importing namespaces for the `GlobalUsings.cs` file
 
-## Known Issues
+## How to modify/personalize this extension
 
- All good so far! This extension do all the things checked with ( [x] ) in the [Next to be added](#next-to-be-added) section.
+ So, you decided to contribute, right?  
+ Doing so is that easy as:
 
-## Release Notes
-
-### 0.0.2
-
-Added xml and json templates
-
-### 0.0.1
-
-Added templates for basic C# files: Class, Struct, Enum and Interface!
-
-### 0.0.0
-
-Created basic skeleton.
+- Download and install `node`.
+- Download this repo.
+- Open up this repo in `vscode`.
+- Run the `npm install` command
+- Press `F5`
+- Modify
 
 ---
 
