@@ -17,7 +17,7 @@ There is a list of the features added, working on, or to be added:
 
 - [ ] [Code completion](#code-completion)
 - [x] [Add new Item](#creating-c-files-top-level)
-- [x] [Sippets](#snippets)
+- [x] [Snippets](#snippets)
 
 ---
 
@@ -71,7 +71,7 @@ List of features I'm going to add, but I'll take my time.
 
 - [ ] code completion for `csproj` files
 
-Used to have a reference when editing a `.cjproj` file, I'll use [this](https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview) document from ms' official documentation!
+Used to have a reference when editing a `.csproj` file, I'll use [this](https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview) document from ms' official documentation!
 
 ### **Snippets**
 
@@ -87,8 +87,7 @@ There are no requirements so far.
 
 ## Extension Settings
 
-`contributes.configuration`  
-Groups of importing namespaces for the `GlobalUsings.cs` file
+Not added so far.
 
 ## How to modify/personalize this extension
 
