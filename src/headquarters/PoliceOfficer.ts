@@ -39,17 +39,17 @@ export class PoliceOfficer {
             console.log(element);
         });
     }
-    static reportFileExit() {
+    static reportFileExist() {
         vscode.window.showErrorMessage(`There is already an item with that name! Please try again with another filename`);
     }
-    static commandExecutedFromTheCommandPallette() {
-        vscode.window.showErrorMessage("This command is still not mean to be run from the command pallette. But it will be soon");
+    static commandExecutedFromTheCommandPalette() {
+        vscode.window.showErrorMessage("This command is still not mean to be run from the command palette. But it will be soon");
     }
     static decideExt(itemType: ItemType): string {
         switch (itemType) {
-            case 'Xml':
+            case 'xml':
                 return '.xml';
-            case 'JSON':
+            case 'json':
                 return '.Json';
             default:
                 return '.cs';

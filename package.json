@@ -2,7 +2,7 @@
     "name": "csharp-stuff",
     "displayName": "C# Stuff",
     "description": "VSCode extension to help dotnet developers do dotnet stuff",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "TheFish2191",
     "repository": "https://github.com/thefish2191/CSharp-Stuff",
     "icon": "/resources/icons8-cascade-64.png",
@@ -15,11 +15,13 @@
         "Snippets"
     ],
     "keywords": [
-        "Dotnet",
         "C#",
-        "New Item",
-        "C# Extensions",
-        "new C#"
+        "new C#",
+        "dotnet",
+        "new item",
+        "new class",
+        "new C# class",
+        "C# Extensions"
     ],
     "preview": true,
     "activationEvents": [
@@ -38,73 +40,73 @@
         "commands": [
             {
                 "command": "csharp-stuff.createClass",
-                "title": "Create Class"
+                "title": "Class"
             },
             {
                 "command": "csharp-stuff.createStruct",
-                "title": "Create Struct"
+                "title": "Struct"
             },
             {
                 "command": "csharp-stuff.createEnum",
-                "title": "Create Enum"
+                "title": "Enum"
             },
             {
                 "command": "csharp-stuff.createInterface",
-                "title": "Create Interface"
+                "title": "Interface"
             },
             {
                 "command": "csharp-stuff.createXML",
-                "title": "Create XML"
+                "title": "XML"
             },
             {
                 "command": "csharp-stuff.createJSON",
-                "title": "Create JSON"
+                "title": "JSON"
             },
             {
-                "command": "testCommand",
-                "title": "Run Test Command C#"
+                "command": "csharp-stuff.createUnityScript",
+                "title": "Unity Script"
             }
         ],
         "submenus": [
             {
-                "id": "newItem",
-                "label": "Create Item"
-            },
-            {
-                "id": "JustRunIt",
-                "label": "Test"
+                "id": "Create Item",
+                "label": "Create C# Item"
             }
         ],
         "menus": {
-            "newItem": [
+            "Create Item": [
                 {
-                    "group": "newCSItem",
+                    "group": "basicItem",
                     "command": "csharp-stuff.createClass"
                 },
                 {
-                    "group": "newCSItem",
+                    "group": "basicItem",
                     "command": "csharp-stuff.createStruct"
                 },
                 {
-                    "group": "newCSItem",
+                    "group": "basicItem",
                     "command": "csharp-stuff.createEnum"
                 },
                 {
-                    "group": "newCSItem",
+                    "group": "basicItem",
                     "command": "csharp-stuff.createInterface"
                 },
                 {
-                    "group": "newDataItem",
+                    "group": "DataItem",
                     "command": "csharp-stuff.createXML"
                 },
                 {
-                    "group": "newDataItem",
+                    "group": "DataItem",
                     "command": "csharp-stuff.createJSON"
+                },
+                {
+                    "group": "UnityItem",
+                    "command": "csharp-stuff.createUnityScript"
                 }
             ],
             "explorer/context": [
                 {
-                    "submenu": "newItem",
+                    "submenu": "Create Item",
                     "group": "navigation",
                     "when": "explorerResourceIsFolder"
                 }

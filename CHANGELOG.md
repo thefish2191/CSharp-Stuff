@@ -10,10 +10,17 @@ All notable changes to the "csharp-stuff" extension will be documented in this f
 
  Here is a list of the changes I didn't forget to log:
 
+### 0.0.6
+
+- Migrating to json snippets: In order to have more clean code, and more readable snippets, a json file with all the snippets is now available, also, this method will be used to allow the user to create items with custom snippets.
+- Added unity scripts
+- Changed Context Menu names.
+- Fixed typos
+
 ### 0.0.5
 
 - Fixed typos
-- Patched: commands run from the command pallette throwing an error
+- Patched: commands run from the command pallette throwing an error.
 
 ### 0.0.4
 
@@ -23,8 +30,8 @@ All notable changes to the "csharp-stuff" extension will be documented in this f
 
 - Fixed bug that allows user to create items without extension.
 - Added a gif to show up what this extension can do, so far.
-- Added license
-- Bug Fix
+- Added license.
+- Bug Fix.
 
 ### 0.0.2
 

@@ -1,16 +1,16 @@
-import { ItemType } from './../extension';
+import { ItemType } from '../extension';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import { PoliceOfficer } from './PoliceOfficer';
 import * as path from 'path';
-import { SharpSnippet } from './Snippefy';
+import { SnippetParser } from './SnippetParser';
 
-export class Worker {
+export class Constructor {
     static async checkIfFileExist(file: Uri): Promise<boolean> {
         let fileExist = true;
         try {
             await vscode.workspace.fs.readFile(file);
-            PoliceOfficer.reportFileExit();
+            PoliceOfficer.reportFileExist();
         } catch (error) {
             if (error instanceof Error) {
                 if (error.name === 'EntryNotFound (FileSystemError)') {
@@ -29,7 +29,7 @@ export class Worker {
                 console.log(`Creating new file!`);
                 await vscode.workspace.fs.writeFile(file, new Uint8Array());
                 vscode.commands.executeCommand('vscode.open', file).then(() => {
-                    vscode.window.activeTextEditor?.insertSnippet(SharpSnippet.createSnippet(itemType, namesp));
+                    vscode.window.activeTextEditor?.insertSnippet(SnippetParser.getSnippet(itemType, namesp));
                 }
                 );
             } catch (error) {

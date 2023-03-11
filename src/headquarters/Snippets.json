@@ -1,0 +1,86 @@
+{
+    "class": {
+        "body": [
+            "namespace [VAR0];",
+            "",
+            "public class $TM_FILENAME_BASE",
+            "{",
+            "\t$0",
+            "}"
+        ],
+        "description": "A full class item"
+    },
+    "enum": {
+        "body": [
+            "namespace [VAR0];",
+            "",
+            "public enum $TM_FILENAME_BASE",
+            "{",
+            "\t$0",
+            "}"
+        ],
+        "description": "A full enum item"
+    },
+    "interface": {
+        "body": [
+            "namespace [VAR0];",
+            "",
+            "public interface $TM_FILENAME_BASE",
+            "{",
+            "\t$0",
+            "}"
+        ],
+        "description": "A full interface item"
+    },
+    "struct": {
+        "body": [
+            "namespace [VAR0];",
+            "",
+            "public struct $TM_FILENAME_BASE",
+            "{",
+            "\t$0",
+            "}"
+        ],
+        "description": "A full struct item"
+    },
+    "xml": {
+        "body": [
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+            "<$TM_FILENAME_BASE>",
+            "\t$0",
+            "</$TM_FILENAME_BASE>"
+        ],
+        "description": "A xml base file"
+    },
+    "json": {
+        "body": [
+            "{",
+            "    $0",
+            "}"
+        ],
+        "description": "A base json item"
+    },
+    "unityScript": {
+        "body": [
+            "using System.Collections;",
+            "using System.Collections.Generic;",
+            "using UnityEngine;",
+            "",
+            "public class $TM_FILENAME_BASE : MonoBehaviour",
+            "{",
+            "    // Start is called before the first frame update",
+            "    void Start()",
+            "    {",
+            "        $0",
+            "    }",
+            "",
+            "    // Update is called once per frame",
+            "    void Update()",
+            "    {",
+            "        ",
+            "    }",
+            "}"
+        ],
+        "description": "A unityScript base file"
+    }
+}
