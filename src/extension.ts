@@ -13,6 +13,9 @@ const createStruct = `${extensionName}.createStruct`;
 const createEnum = `${extensionName}.createEnum`;
 const createInterface = `${extensionName}.createInterface`;
 
+// Command names for unity snippets
+const createUnityScript = `${extensionName}.createUnityScript`;
+
 // Command names for data types
 const createXML = `${extensionName}.createXML`;
 const createJSON = `${extensionName}.createJSON`;
@@ -57,6 +60,13 @@ export async function activate(context: vscode.ExtensionContext) {
         }
         await createItem(clicker, ItemType.interfaceItem);
     });
+    let unitySnippetCreator = vscode.commands.registerCommand(createUnityScript, async (clicker: Uri) => {
+        if (clicker === undefined) {
+            PoliceOfficer.commandExecutedFromTheCommandPalette();
+            return;
+        }
+        await createItem(clicker, ItemType.unityScript);
+    });
     let xmlCreator = vscode.commands.registerCommand(createXML, async (clicker: Uri) => {
         if (clicker === undefined) {
             PoliceOfficer.commandExecutedFromTheCommandPalette();
@@ -71,11 +81,7 @@ export async function activate(context: vscode.ExtensionContext) {
         }
         await createItem(clicker, ItemType.jsonItem);
     });
-    let testCommand = vscode.commands.registerCommand('testCommand', async (clicker: Uri) => {
-        if (clicker === undefined) {
-        }
-    });
-    context.subscriptions.push(classCreator, structCreator, enumCreator, interfaceCreator, xmlCreator, jsonCreator, testCommand);
+    context.subscriptions.push(classCreator, structCreator, enumCreator, interfaceCreator, xmlCreator, jsonCreator, unitySnippetCreator);
 }
 
 export enum ItemType {
@@ -83,6 +89,7 @@ export enum ItemType {
     enumItem = 'Enum',
     interfaceItem = 'Interface',
     structItem = 'Struct',
+    unityScript = 'UnityScript',
     xmlItem = 'xml',
-    jsonItem = 'json',
+    jsonItem = 'json'
 }

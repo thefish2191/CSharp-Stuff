@@ -1,5 +1,5 @@
-import { ItemType } from './../extension';
 import Snippets from './Snippets.json';
+import { ItemType } from './../extension';
 import { SnippetString } from 'vscode';
 
 export class SnippetParser {
@@ -26,6 +26,9 @@ export class SnippetParser {
                 break;
             case ItemType.structItem:
                 rawSnippet = Snippets.struct.body;
+                break;
+            case ItemType.unityScript:
+                rawSnippet = Snippets.unityScript.body;
                 break;
             case ItemType.xmlItem:
                 rawSnippet = Snippets.xml.body;

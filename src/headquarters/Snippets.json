@@ -55,8 +55,32 @@
     "json": {
         "body": [
             "{",
-            "\t",
+            "    $0",
             "}"
-        ]
+        ],
+        "description": "A base json item"
+    },
+    "unityScript": {
+        "body": [
+            "using System.Collections;",
+            "using System.Collections.Generic;",
+            "using UnityEngine;",
+            "",
+            "public class $TM_FILENAME_BASE : MonoBehaviour",
+            "{",
+            "    // Start is called before the first frame update",
+            "    void Start()",
+            "    {",
+            "        $0",
+            "    }",
+            "",
+            "    // Update is called once per frame",
+            "    void Update()",
+            "    {",
+            "        ",
+            "    }",
+            "}"
+        ],
+        "description": "A unityScript base file"
     }
 }
