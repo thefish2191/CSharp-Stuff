@@ -1,4 +1,4 @@
-# Dotnet-helper
+# C# stuff
 
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/TheFish2191.csharp-stuff?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=TheFish2191.csharp-stuff)
 
@@ -48,7 +48,6 @@ List of features I'm going to add, but I'll take my time.
   - [ ] console
   - [ ] angular
   - [ ] classLib
-  </details>  
 - [ ] Add global using file
 - [ ] Move usings to `GlobalUsings.cs` file
 

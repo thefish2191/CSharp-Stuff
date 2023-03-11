@@ -10,6 +10,11 @@ All notable changes to the "csharp-stuff" extension will be documented in this f
 
  Here is a list of the changes I didn't forget to log:
 
+### 0.0.5
+
+- Fixed typos
+- Patched: commands run from the command pallette throwing an error
+
 ### 0.0.4
 
 - Attempt to force vscode to play gif.

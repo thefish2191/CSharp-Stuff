@@ -1,135 +1,135 @@
 {
-  "name": "csharp-stuff",
-  "displayName": "C# Stuff",
-  "description": "VSCode extension to help dotnet developers do dotnet stuff",
-  "version": "0.0.4",
-  "publisher": "TheFish2191",
-  "repository": "https://github.com/thefish2191/CSharp-Stuff",
-  "icon": "/resources/icons8-cascade-64.png",
-  "engines": {
-    "vscode": "^1.75.0"
-  },
-  "license": "MIT",
-  "categories": [
-    "Programming Languages",
-    "Snippets"
-  ],
-  "keywords": [
-    "Dotnet",
-    "C#",
-    "New Item",
-    "C# Extensions",
-    "new C#"
-  ],
-  "preview": true,
-  "activationEvents": [
-    "onLanguage:csharp",
-    "workspaceContains:**/*.cs",
-    "workspaceContains:**/*.csproj"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "snippets": [
-      {
-        "language": "csharp",
-        "path": "./snippets/snippets.json/"
-      }
+    "name": "csharp-stuff",
+    "displayName": "C# Stuff",
+    "description": "VSCode extension to help dotnet developers do dotnet stuff",
+    "version": "0.0.5",
+    "publisher": "TheFish2191",
+    "repository": "https://github.com/thefish2191/CSharp-Stuff",
+    "icon": "/resources/icons8-cascade-64.png",
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "license": "MIT",
+    "categories": [
+        "Programming Languages",
+        "Snippets"
     ],
-    "commands": [
-      {
-        "command": "csharp-stuff.createClass",
-        "title": "Create Class"
-      },
-      {
-        "command": "csharp-stuff.createStruct",
-        "title": "Create Struct"
-      },
-      {
-        "command": "csharp-stuff.createEnum",
-        "title": "Create Enum"
-      },
-      {
-        "command": "csharp-stuff.createInterface",
-        "title": "Create Interface"
-      },
-      {
-        "command": "csharp-stuff.createXML",
-        "title": "Crate XML"
-      },
-      {
-        "command": "csharp-stuff.createJSON",
-        "title": "Crate JSON"
-      }
+    "keywords": [
+        "Dotnet",
+        "C#",
+        "New Item",
+        "C# Extensions",
+        "new C#"
     ],
-    "submenus": [
-      {
-        "id": "newItem",
-        "label": "Create Item"
-      },
-      {
-        "id": "csOptions",
-        "label": "cs options"
-      },
-      {
-        "id": "JustRunIt",
-        "label": "Test"
-      }
+    "preview": true,
+    "activationEvents": [
+        "onLanguage:csharp",
+        "workspaceContains:**/*.cs",
+        "workspaceContains:**/*.csproj"
     ],
-    "menus": {
-      "newItem": [
-        {
-          "group": "newCSItem",
-          "command": "csharp-stuff.createClass"
-        },
-        {
-          "group": "newCSItem",
-          "command": "csharp-stuff.createStruct"
-        },
-        {
-          "group": "newCSItem",
-          "command": "csharp-stuff.createEnum"
-        },
-        {
-          "group": "newCSItem",
-          "command": "csharp-stuff.createInterface"
-        },
-        {
-          "group": "newDataItem",
-          "command": "csharp-stuff.createXML"
-        },
-        {
-          "group": "newDataItem",
-          "command": "csharp-stuff.createJSON"
+    "main": "./out/extension.js",
+    "contributes": {
+        "snippets": [
+            {
+                "language": "csharp",
+                "path": "./snippets/snippets.json/"
+            }
+        ],
+        "commands": [
+            {
+                "command": "csharp-stuff.createClass",
+                "title": "Create Class"
+            },
+            {
+                "command": "csharp-stuff.createStruct",
+                "title": "Create Struct"
+            },
+            {
+                "command": "csharp-stuff.createEnum",
+                "title": "Create Enum"
+            },
+            {
+                "command": "csharp-stuff.createInterface",
+                "title": "Create Interface"
+            },
+            {
+                "command": "csharp-stuff.createXML",
+                "title": "Create XML"
+            },
+            {
+                "command": "csharp-stuff.createJSON",
+                "title": "Create JSON"
+            },
+            {
+                "command": "testCommand",
+                "title": "Run Test Command C#"
+            }
+        ],
+        "submenus": [
+            {
+                "id": "newItem",
+                "label": "Create Item"
+            },
+            {
+                "id": "JustRunIt",
+                "label": "Test"
+            }
+        ],
+        "menus": {
+            "newItem": [
+                {
+                    "group": "newCSItem",
+                    "command": "csharp-stuff.createClass"
+                },
+                {
+                    "group": "newCSItem",
+                    "command": "csharp-stuff.createStruct"
+                },
+                {
+                    "group": "newCSItem",
+                    "command": "csharp-stuff.createEnum"
+                },
+                {
+                    "group": "newCSItem",
+                    "command": "csharp-stuff.createInterface"
+                },
+                {
+                    "group": "newDataItem",
+                    "command": "csharp-stuff.createXML"
+                },
+                {
+                    "group": "newDataItem",
+                    "command": "csharp-stuff.createJSON"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "submenu": "newItem",
+                    "group": "navigation",
+                    "when": "explorerResourceIsFolder"
+                }
+            ]
         }
-      ],
-      "explorer/context": [
-        {
-          "submenu": "newItem",
-          "group": "navigation",
-          "when": "explorerResourceIsFolder"
-        }
-      ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^8.0.1",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "^16.18.12",
+        "@types/vscode": "^1.75.0",
+        "@typescript-eslint/eslint-plugin": "^5.49.0",
+        "@typescript-eslint/parser": "^5.49.0",
+        "@vscode/test-electron": "^2.2.2",
+        "eslint": "^8.33.0",
+        "glob": "^8.1.0",
+        "mocha": "^10.1.0",
+        "typescript": "^4.9.4"
     }
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/glob": "^8.0.1",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^16.18.12",
-    "@types/vscode": "^1.75.0",
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
-    "@typescript-eslint/parser": "^5.49.0",
-    "@vscode/test-electron": "^2.2.2",
-    "eslint": "^8.33.0",
-    "glob": "^8.1.0",
-    "mocha": "^10.1.0",
-    "typescript": "^4.9.4"
-  }
 }
