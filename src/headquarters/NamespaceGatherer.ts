@@ -21,7 +21,7 @@ let candidate: string;
 const csprojPattern = '**/*.csproj';
 
 
-export class Namespacer {
+export class ProjectGatherer {
     static async generateNamespace(clicker: Uri): Promise<string> {
         let allProjectsPaths = await FileSpotter.findFilesThanMatchPattern(csprojPattern);
         let rootFolderName = vscode.workspace.getWorkspaceFolder(clicker)?.name!;
@@ -44,7 +44,7 @@ export class Namespacer {
                 candidate = candidate + clickerPathRelative;
             }
         }
-        return Namespacer.dirToNamespace(candidate);
+        return ProjectGatherer.dirToNamespace(candidate);
     }
     static dirToNamespace(dir: string): string {
         let temp = dir;
