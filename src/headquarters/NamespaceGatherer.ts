@@ -30,10 +30,12 @@ export class ProjectGatherer {
         // local dir where click was made, only for raw namespace
         clickerPathRelative = clicker.fsPath.replace(vscode.workspace.getWorkspaceFolder(clicker)?.uri.fsPath!, '');
         allParentProjects = Orphanage.findParents(allProjectsPaths, clickerPath);
-        if (allParentProjects.length > 1) {
-            PoliceOfficer.reportMultipleParent(allParentProjects);
-            return '';
-        }
+
+        // Commented to avoid seeing this message when using unity
+        // if (allParentProjects.length > 1) {
+        // PoliceOfficer.reportMultipleParent(allParentProjects);
+        // return '';
+        // }
         try {
             baseDir = FileSpotter.getFileInfo(allParentProjects[0]).pathDir;
             candidate = FileSpotter.getFileInfo(allParentProjects[0]).fileNameNoExt;

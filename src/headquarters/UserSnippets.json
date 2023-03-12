@@ -1,0 +1,14 @@
+{
+    "class": {
+        "body": [
+            "namespace [namespace];",
+            "",
+            "public class $TM_FILENAME_BASE",
+            "{",
+            "    $0",
+            "}",
+            ""
+        ],
+        "description": "A full class item"
+    }
+}

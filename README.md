@@ -2,20 +2,21 @@
 
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/TheFish2191.csharp-stuff?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=TheFish2191.csharp-stuff)
 
-Adding custom features to vs code, in order to make c# development smoother and easier.  
+Adding custom features to VS Code, in order to make c# development smoother and easier.  
 Focused on Dotnet 6 and above.
 
 ## Overview
 
 ![presentation](/resources/demostration00.gif)
 
-> You can always request a new feature by just raising a issue at [this](https://github.com/thefish2191/CSharp-Stuff) very repo, or directly to [my twitter](https://twitter.com/thefish2191) account
+> You can always request a new feature by just raising an issue at [this](https://github.com/thefish2191/CSharp-Stuff) very repo, or directly to [my Twitter](https://twitter.com/thefish2191) account
 
 ## Features
 
 There is a list of the features added, working on, or to be added:
 
 - [ ] [Code completion](#code-completion)
+- [x] Unity script
 - [x] [Add new Item](#creating-c-files-top-level)
 - [x] [Snippets](#snippets)
 
@@ -36,6 +37,7 @@ List of features I'm going to add, but I'll take my time.
   - [x] interface
   - [x] XML
   - [x] JSON
+  - [x] Unity Scripts
 
 - [ ] Add new Web files
   - [ ] controller
@@ -53,7 +55,7 @@ List of features I'm going to add, but I'll take my time.
 
 ---
 
-## ***Use dotnet cli from where you need it***
+## ***Use dotnet CLI from where you need it***
 
 **This functions works on `.csproj` files:**
 
@@ -66,7 +68,7 @@ List of features I'm going to add, but I'll take my time.
 
 ---
 
-### **code completion**
+### **Code completion**
 
 - [ ] code completion for `csproj` files
 

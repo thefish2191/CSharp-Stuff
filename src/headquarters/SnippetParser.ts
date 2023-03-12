@@ -3,16 +3,13 @@ import { ItemType } from './../extension';
 import { SnippetString } from 'vscode';
 
 export class SnippetParser {
-    static getSnippet(itemType: ItemType, ...vars: string[]): SnippetString {
-        let snippetString = this.readSnippets(itemType);
-        for (let index = 0; index < vars.length; index++) {
-            let indexString = '[VAR' + index.toString() + ']';
-            snippetString = snippetString.replace(indexString, vars[index]);
-        }
+    static getDefaultSnippet(itemType: ItemType, namesp: string): SnippetString {
+        let snippetString = this.getSnippets(itemType);
+        snippetString = snippetString.replace('[namespace]', namesp);
         return new SnippetString(snippetString);
     }
 
-    private static readSnippets(type: ItemType): string {
+    private static getSnippets(type: ItemType): string {
         let rawSnippet: string[] = [];
         switch (type) {
             case ItemType.classItem:

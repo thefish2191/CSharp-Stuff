@@ -3,6 +3,9 @@ import { Uri } from 'vscode';
 import { ProjectGatherer } from './headquarters/NamespaceGatherer';
 import { Constructor } from './headquarters/Constructor';
 import { PoliceOfficer } from './headquarters/PoliceOfficer';
+import { GlobalStorageMgr } from './headquarters/GlobalStorageMgr';
+import * as path from 'path';
+
 
 // Extension related, to avoid manual changes
 export const extensionName = 'csharp-stuff';
@@ -20,7 +23,13 @@ const createUnityScript = `${extensionName}.createUnityScript`;
 const createXML = `${extensionName}.createXML`;
 const createJSON = `${extensionName}.createJSON`;
 
-export async function activate(context: vscode.ExtensionContext) {
+// Command used to test stuff
+const testCommand = `${extensionName}.testCommand`;
+
+export async function activate(extensionContext: vscode.ExtensionContext) {
+    console.log(`${extensionName} is now running!`);
+
+    // Used to create files
     let filename: string;
     let filenamePath: Uri;
     let namespace: string;
@@ -32,56 +41,77 @@ export async function activate(context: vscode.ExtensionContext) {
             Constructor.createNewItem(filenamePath, namespace, itemType);
         }
     }
+
+    // Global storage
+    const localPath = Uri.file(extensionContext.extensionPath);
+    const extensionStorage = extensionContext.globalStorageUri;
+
+    // User Snippet stuff
+    const snippetUri = Uri.file(localPath.fsPath + path.sep + 'src/headquarters/UserSnippets.json');
+    const actualUserSnippetsPath = Uri.file(extensionStorage.fsPath + path.sep + 'UserSnippets.json');
+
+    //#region Methods called when the extension is just starting
+    GlobalStorageMgr.ensureGlobalStorage(extensionStorage);
+    GlobalStorageMgr.placeUserSnippetsTemplate(snippetUri, actualUserSnippetsPath);
+    //#endregion
+
+    //#region create items commands:
     let classCreator = vscode.commands.registerCommand(createClass, async (clicker: Uri) => {
         if (clicker === undefined) {
             PoliceOfficer.commandExecutedFromTheCommandPalette();
             return;
         }
-        await createItem(clicker, ItemType.classItem);
+        createItem(clicker, ItemType.classItem);
     });
     let structCreator = vscode.commands.registerCommand(createStruct, async (clicker: Uri) => {
         if (clicker === undefined) {
             PoliceOfficer.commandExecutedFromTheCommandPalette();
             return;
         }
-        await createItem(clicker, ItemType.structItem);
+        createItem(clicker, ItemType.structItem);
     });
     let enumCreator = vscode.commands.registerCommand(createEnum, async (clicker: Uri) => {
         if (clicker === undefined) {
             PoliceOfficer.commandExecutedFromTheCommandPalette();
             return;
         }
-        await createItem(clicker, ItemType.enumItem);
+        createItem(clicker, ItemType.enumItem);
     });
     let interfaceCreator = vscode.commands.registerCommand(createInterface, async (clicker: Uri) => {
         if (clicker === undefined) {
             PoliceOfficer.commandExecutedFromTheCommandPalette();
             return;
         }
-        await createItem(clicker, ItemType.interfaceItem);
+        createItem(clicker, ItemType.interfaceItem);
     });
     let unitySnippetCreator = vscode.commands.registerCommand(createUnityScript, async (clicker: Uri) => {
         if (clicker === undefined) {
             PoliceOfficer.commandExecutedFromTheCommandPalette();
             return;
         }
-        await createItem(clicker, ItemType.unityScript);
+        createItem(clicker, ItemType.unityScript);
     });
     let xmlCreator = vscode.commands.registerCommand(createXML, async (clicker: Uri) => {
         if (clicker === undefined) {
             PoliceOfficer.commandExecutedFromTheCommandPalette();
             return;
         }
-        await createItem(clicker, ItemType.xmlItem);
+        createItem(clicker, ItemType.xmlItem);
     });
     let jsonCreator = vscode.commands.registerCommand(createJSON, async (clicker: Uri) => {
         if (clicker === undefined) {
             PoliceOfficer.commandExecutedFromTheCommandPalette();
             return;
         }
-        await createItem(clicker, ItemType.jsonItem);
+        createItem(clicker, ItemType.jsonItem);
     });
-    context.subscriptions.push(classCreator, structCreator, enumCreator, interfaceCreator, xmlCreator, jsonCreator, unitySnippetCreator);
+    //#endregion
+
+    let testMethod = vscode.commands.registerCommand(testCommand, async (clicker: Uri) => {
+        console.log(GlobalStorageMgr.readUserSnippets(actualUserSnippetsPath));
+    });
+
+    extensionContext.subscriptions.push(classCreator, structCreator, enumCreator, interfaceCreator, xmlCreator, jsonCreator, unitySnippetCreator, testMethod);
 }
 
 export enum ItemType {

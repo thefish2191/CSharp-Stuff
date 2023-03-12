@@ -50,7 +50,7 @@ export class PoliceOfficer {
             case 'xml':
                 return '.xml';
             case 'json':
-                return '.Json';
+                return '.json';
             default:
                 return '.cs';
         }

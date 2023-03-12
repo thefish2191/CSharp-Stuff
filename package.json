@@ -2,7 +2,7 @@
     "name": "csharp-stuff",
     "displayName": "C# Stuff",
     "description": "VSCode extension to help dotnet developers do dotnet stuff",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "TheFish2191",
     "repository": "https://github.com/thefish2191/CSharp-Stuff",
     "icon": "/resources/icons8-cascade-64.png",
@@ -65,6 +65,10 @@
             {
                 "command": "csharp-stuff.createUnityScript",
                 "title": "Unity Script"
+            },
+            {
+                "command": "csharp-stuff.testCommand",
+                "title": "C# stuff test command"
             }
         ],
         "submenus": [

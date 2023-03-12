@@ -10,6 +10,11 @@ All notable changes to the "csharp-stuff" extension will be documented in this f
 
  Here is a list of the changes I didn't forget to log:
 
+### 0.0.7
+
+- Removed annoying message when creating unity scripts, reporting multiple parent projects
+  Note: This message will be enable again, once we separate the item creator method for Unity items.
+
 ### 0.0.6
 
 - Migrating to json snippets: In order to have more clean code, and more readable snippets, a json file with all the snippets is now available, also, this method will be used to allow the user to create items with custom snippets.

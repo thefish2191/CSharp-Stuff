@@ -29,7 +29,7 @@ export class Constructor {
                 console.log(`Creating new file!`);
                 await vscode.workspace.fs.writeFile(file, new Uint8Array());
                 vscode.commands.executeCommand('vscode.open', file).then(() => {
-                    vscode.window.activeTextEditor?.insertSnippet(SnippetParser.getSnippet(itemType, namesp));
+                    vscode.window.activeTextEditor?.insertSnippet(SnippetParser.getDefaultSnippet(itemType, namesp));
                 }
                 );
             } catch (error) {
