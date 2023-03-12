@@ -9,9 +9,11 @@ export class GlobalStorageMgr {
         } catch (error) {
         }
     }
-    static async placeUserSnippetsTemplate(snippetUri: Uri, destination: Uri) {
+    static async placeUserSnippetsTemplate(snippetUri: Uri, destination: Uri, force: boolean = false) {
         try {
-            vscode.workspace.fs.copy(snippetUri, destination);
+            vscode.workspace.fs.copy(snippetUri, destination, {
+                "overwrite": force
+            });
         } catch (error) {
         }
     }

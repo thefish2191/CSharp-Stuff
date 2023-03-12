@@ -23,13 +23,12 @@ export class Constructor {
     static createNewFileUri(invoker: Uri, filename: string): Uri {
         return Uri.file(invoker.fsPath + path.sep + filename);
     }
-    static async createNewItem(file: Uri, namesp: string, itemType: ItemType) {
+    static async createNewItem(file: Uri, namesp: string, itemType: ItemType, actualUserSnippetsPath: Uri) {
         if (await this.checkIfFileExist(file) === false) {
             try {
-                console.log(`Creating new file!`);
                 await vscode.workspace.fs.writeFile(file, new Uint8Array());
-                vscode.commands.executeCommand('vscode.open', file).then(() => {
-                    vscode.window.activeTextEditor?.insertSnippet(SnippetParser.getDefaultSnippet(itemType, namesp));
+                vscode.commands.executeCommand('vscode.open', file).then(async () => {
+                    await vscode.window.activeTextEditor?.insertSnippet(await SnippetParser.createSnippet(itemType, namesp, actualUserSnippetsPath));
                 }
                 );
             } catch (error) {

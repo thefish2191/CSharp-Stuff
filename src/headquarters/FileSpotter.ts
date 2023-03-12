@@ -22,6 +22,10 @@ export class FileSpotter {
         let fileInfo: FileInfo = { fileName: elementName, fileNameNoExt: elementNameNoExt, fullPath: elementPath, pathDir: folderDir };
         return fileInfo;
     }
+    static removeFilename(path: string) {
+        let info = this.getFileInfo(path);
+        return info.pathDir;
+    }
 }
 
 /**

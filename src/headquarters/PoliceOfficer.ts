@@ -1,8 +1,10 @@
 import { extensionName } from './../extension';
 import * as vscode from 'vscode';
 import { ItemType } from '../extension';
+import * as path from 'path';
 
-const validItemName = /(\w+_?)/;
+// const validItemName = /(\w+_?)/;
+const multiSlashes = /(\/{2,}|\\{2,})/gm;
 
 export class PoliceOfficer {
     static async askUserForAName(type: ItemType): Promise<string> {
@@ -15,16 +17,18 @@ export class PoliceOfficer {
             placeHolder: 'Give it a name',
             prompt: `Great ${type} names uses letters and underscores (_) only!`,
             value: tempItemName,
-            valueSelection: [0, tempItemName.length - fExt.length]
+            valueSelection: [0, tempItemName.length - fExt.length],
         });
         if ((itemName === undefined) || (itemName === '')) {
-            itemName = type;
+            vscode.window.showErrorMessage('Operation cancelled by user');
+            throw new Error(`Operation cancelled by user`);
         }
-        if (!itemName.match(validItemName)) {
-            itemName = type;
-        }
-        if (!itemName.endsWith(fExt)) {
+        if (itemName.endsWith(fExt)) {
             itemName = itemName + fExt;
+        }
+        itemName = itemName.replace(multiSlashes, path.sep);
+        if (itemName.startsWith('/') || itemName.startsWith('\\')) {
+            itemName.substring(1);
         }
         return itemName;
     }

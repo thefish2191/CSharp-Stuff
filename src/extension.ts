@@ -5,7 +5,6 @@ import { Constructor } from './headquarters/Constructor';
 import { PoliceOfficer } from './headquarters/PoliceOfficer';
 import { GlobalStorageMgr } from './headquarters/GlobalStorageMgr';
 import * as path from 'path';
-import { SnippetParser } from './headquarters/SnippetParser';
 
 
 // Extension related, to avoid manual changes
@@ -24,24 +23,15 @@ const createUnityScript = `${extensionName}.createUnityScript`;
 const createXML = `${extensionName}.createXML`;
 const createJSON = `${extensionName}.createJSON`;
 
-// Command used to test stuff
+// Command used to create custom items
 const createCustomItem = `${extensionName}.createCustomItem`;
+const openCustomItemTemplates = `${extensionName}.openCustomItemTemplates`;
+const rewriteCustomItemTemplates = `${extensionName}.rewriteCustomItemTemplates`;
+
 
 export async function activate(extensionContext: vscode.ExtensionContext) {
     console.log(`${extensionName} is now running!`);
 
-    // Used to create files
-    let filename: string;
-    let filenamePath: Uri;
-    let namespace: string;
-    async function createItem(clicker: Uri, itemType: ItemType) {
-        filename = await PoliceOfficer.askUserForAName(itemType);
-        filenamePath = Constructor.createNewFileUri(clicker, filename);
-        namespace = await ProjectGatherer.generateNamespace(clicker);
-        if (!await Constructor.checkIfFileExist(filenamePath)) {
-            Constructor.createNewItem(filenamePath, namespace, itemType);
-        }
-    }
 
     // Global storage
     const localPath = Uri.file(extensionContext.extensionPath);
@@ -55,6 +45,24 @@ export async function activate(extensionContext: vscode.ExtensionContext) {
     GlobalStorageMgr.ensureGlobalStorage(extensionStorage);
     GlobalStorageMgr.placeUserSnippetsTemplate(snippetUri, actualUserSnippetsPath);
     //#endregion
+
+
+    // Used to create files
+    let filename: string;
+    let filenamePath: Uri;
+    let namespace: string;
+    async function createItem(clicker: Uri, itemType: ItemType) {
+        try {
+            filename = await PoliceOfficer.askUserForAName(itemType);
+            filenamePath = Constructor.createNewFileUri(clicker, filename);
+            namespace = await ProjectGatherer.generateNamespace(filenamePath, filename);
+            if (!await Constructor.checkIfFileExist(filenamePath)) {
+                Constructor.createNewItem(filenamePath, namespace, itemType, actualUserSnippetsPath);
+            }
+        } catch (error) {
+
+        }
+    }
 
     //#region create items commands:
     let classCreator = vscode.commands.registerCommand(createClass, async (clicker: Uri) => {
@@ -109,16 +117,21 @@ export async function activate(extensionContext: vscode.ExtensionContext) {
     //#endregion
 
     let customItemCreator = vscode.commands.registerCommand(createCustomItem, async (clicker: Uri) => {
-        let userSnippets = await GlobalStorageMgr.getUserSnippetsNames(actualUserSnippetsPath);
-        let userSelection = await vscode.window.showQuickPick(userSnippets);
-        let actualSnippet = await GlobalStorageMgr.getUserSnippet(userSelection!, actualUserSnippetsPath);
-        let vscodeSnippet = SnippetParser.convertSnippet(actualSnippet, 'random');
-        console.log(vscodeSnippet);
 
-        await vscode.window.activeTextEditor?.insertSnippet(vscodeSnippet);
+        if (clicker === undefined) {
+            PoliceOfficer.commandExecutedFromTheCommandPalette();
+            return;
+        }
+        createItem(clicker, ItemType.customItem);
+    });
+    let openCustomItemTempl = vscode.commands.registerCommand(openCustomItemTemplates, async (clicker: Uri) => {
+        vscode.commands.executeCommand('vscode.open', actualUserSnippetsPath);
+    });
+    let rewriteCustomItemTempl = vscode.commands.registerCommand(rewriteCustomItemTemplates, async (clicker: Uri) => {
+        GlobalStorageMgr.placeUserSnippetsTemplate(snippetUri, actualUserSnippetsPath, true);
     });
 
-    extensionContext.subscriptions.push(classCreator, structCreator, enumCreator, interfaceCreator, xmlCreator, jsonCreator, unitySnippetCreator, customItemCreator);
+    extensionContext.subscriptions.push(classCreator, structCreator, enumCreator, interfaceCreator, xmlCreator, jsonCreator, unitySnippetCreator, customItemCreator, openCustomItemTempl, rewriteCustomItemTempl);
 }
 
 export enum ItemType {

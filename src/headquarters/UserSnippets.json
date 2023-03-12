@@ -1,13 +1,20 @@
 {
-    "class": {
+    "entity class": {
         "body": [
             "namespace [namespace];",
             "",
-            "public class $TM_FILENAME_BASE",
+            "public class Bicycle",
             "{",
             "    $0",
             "}",
-            ""
+            "",
+            "public class BicycleConfiguration : IEntityTypeConfiguration<Bicycle>",
+            "{",
+            "    public void Configure(EntityTypeBuilder<Bicycle> builder)",
+            "    {",
+            "        ",
+            "    }",
+            "}"
         ],
         "description": "A full class item"
     }

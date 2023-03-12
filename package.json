@@ -67,8 +67,16 @@
                 "title": "Unity Script"
             },
             {
-                "command": "csharp-stuff.testCommand",
-                "title": "C# stuff test command"
+                "command": "csharp-stuff.createCustomItem",
+                "title": "Custom Item"
+            },
+            {
+                "command": "csharp-stuff.openCustomItemTemplates",
+                "title": "Open custom Item templates"
+            },
+            {
+                "command": "csharp-stuff.rewriteCustomItemTemplates",
+                "title": "Rewrite custom Item templates"
             }
         ],
         "submenus": [
@@ -109,7 +117,7 @@
                 },
                 {
                     "group": "UnityItem",
-                    "command": "csharp-stuff.testCommand"
+                    "command": "csharp-stuff.createCustomItem"
                 }
             ],
             "explorer/context": [
