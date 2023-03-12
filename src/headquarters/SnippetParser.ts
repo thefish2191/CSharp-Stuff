@@ -1,18 +1,16 @@
 import Snippets from './Snippets.json';
 import { ItemType } from './../extension';
-import { SnippetString } from 'vscode';
+import { SnippetString, Uri } from 'vscode';
+import { GlobalStorageMgr } from './GlobalStorageMgr';
+import * as vscode from 'vscode';
 
 export class SnippetParser {
-    static getSnippet(itemType: ItemType, ...vars: string[]): SnippetString {
-        let snippetString = this.readSnippets(itemType);
-        for (let index = 0; index < vars.length; index++) {
-            let indexString = '[VAR' + index.toString() + ']';
-            snippetString = snippetString.replace(indexString, vars[index]);
-        }
+    static async createSnippet(itemType: ItemType, namesp: string, actualUserSnippetsPath: Uri): Promise<SnippetString> {
+        let snippetString = await this.getSnippets(itemType, actualUserSnippetsPath);
+        snippetString = snippetString.replace('[namespace]', namesp);
         return new SnippetString(snippetString);
     }
-
-    private static readSnippets(type: ItemType): string {
+    private static async getSnippets(type: ItemType, actualUserSnippetsPath: Uri): Promise<string> {
         let rawSnippet: string[] = [];
         switch (type) {
             case ItemType.classItem:
@@ -35,6 +33,20 @@ export class SnippetParser {
                 break;
             case ItemType.jsonItem:
                 rawSnippet = Snippets.json.body;
+                break;
+            case ItemType.customItem:
+                // TODO add a method here, to get the user snippets
+                let userSnippets: any;
+                try {
+                    userSnippets = await GlobalStorageMgr.getUserSnippetsNames(actualUserSnippetsPath);
+                } catch {
+                    vscode.window.showErrorMessage('No custom items where found! Please run the command: "Open Custom Item Templates" or "Rewrite Custom Item Templates" on the command palette');
+                }
+                if (userSnippets.length === 0) {
+                }
+                let userSelection = await vscode.window.showQuickPick(userSnippets);
+                let actualSnippet = await GlobalStorageMgr.getUserSnippet(userSelection!, actualUserSnippetsPath);
+                rawSnippet = actualSnippet;
                 break;
             default: {
                 const xError: never = type;

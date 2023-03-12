@@ -2,12 +2,12 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Uri } from 'vscode';
 import { Orphanage } from './Orphanage';
-import { FileSpotter } from './FileSpotter';
+import { FileSpotter, fileNameRex } from './FileSpotter';
 import { PoliceOfficer } from './PoliceOfficer';
 
 
 
-const separatorsRegex = /[\/\\]/gm;
+export const separatorsRegex = /[\/\\]/gm;
 
 let clickerPath: string;
 let clickerPathRelative: string;
@@ -22,18 +22,22 @@ const csprojPattern = '**/*.csproj';
 
 
 export class ProjectGatherer {
-    static async generateNamespace(clicker: Uri): Promise<string> {
+    static async generateNamespace(clicker: Uri, filename: string): Promise<string> {
         let allProjectsPaths = await FileSpotter.findFilesThanMatchPattern(csprojPattern);
         let rootFolderName = vscode.workspace.getWorkspaceFolder(clicker)?.name!;
+        if (clicker === undefined) {
+        }
         // full path where click was made
         clickerPath = clicker.fsPath!;
         // local dir where click was made, only for raw namespace
         clickerPathRelative = clicker.fsPath.replace(vscode.workspace.getWorkspaceFolder(clicker)?.uri.fsPath!, '');
         allParentProjects = Orphanage.findParents(allProjectsPaths, clickerPath);
-        if (allParentProjects.length > 1) {
-            PoliceOfficer.reportMultipleParent(allParentProjects);
-            return '';
-        }
+
+        // Commented to avoid seeing this message when using unity
+        // if (allParentProjects.length > 1) {
+        // PoliceOfficer.reportMultipleParent(allParentProjects);
+        // return '';
+        // }
         try {
             baseDir = FileSpotter.getFileInfo(allParentProjects[0]).pathDir;
             candidate = FileSpotter.getFileInfo(allParentProjects[0]).fileNameNoExt;
@@ -44,6 +48,7 @@ export class ProjectGatherer {
                 candidate = candidate + clickerPathRelative;
             }
         }
+        candidate = candidate.replace(fileNameRex, '');
         return ProjectGatherer.dirToNamespace(candidate);
     }
     static dirToNamespace(dir: string): string {
