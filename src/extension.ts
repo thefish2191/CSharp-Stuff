@@ -5,6 +5,7 @@ import { Constructor } from './headquarters/Constructor';
 import { PoliceOfficer } from './headquarters/PoliceOfficer';
 import { GlobalStorageMgr } from './headquarters/GlobalStorageMgr';
 import * as path from 'path';
+import { SnippetParser } from './headquarters/SnippetParser';
 
 
 // Extension related, to avoid manual changes
@@ -24,7 +25,7 @@ const createXML = `${extensionName}.createXML`;
 const createJSON = `${extensionName}.createJSON`;
 
 // Command used to test stuff
-const testCommand = `${extensionName}.testCommand`;
+const createCustomItem = `${extensionName}.createCustomItem`;
 
 export async function activate(extensionContext: vscode.ExtensionContext) {
     console.log(`${extensionName} is now running!`);
@@ -107,11 +108,17 @@ export async function activate(extensionContext: vscode.ExtensionContext) {
     });
     //#endregion
 
-    let testMethod = vscode.commands.registerCommand(testCommand, async (clicker: Uri) => {
-        console.log(GlobalStorageMgr.readUserSnippets(actualUserSnippetsPath));
+    let customItemCreator = vscode.commands.registerCommand(createCustomItem, async (clicker: Uri) => {
+        let userSnippets = await GlobalStorageMgr.getUserSnippetsNames(actualUserSnippetsPath);
+        let userSelection = await vscode.window.showQuickPick(userSnippets);
+        let actualSnippet = await GlobalStorageMgr.getUserSnippet(userSelection!, actualUserSnippetsPath);
+        let vscodeSnippet = SnippetParser.convertSnippet(actualSnippet, 'random');
+        console.log(vscodeSnippet);
+
+        await vscode.window.activeTextEditor?.insertSnippet(vscodeSnippet);
     });
 
-    extensionContext.subscriptions.push(classCreator, structCreator, enumCreator, interfaceCreator, xmlCreator, jsonCreator, unitySnippetCreator, testMethod);
+    extensionContext.subscriptions.push(classCreator, structCreator, enumCreator, interfaceCreator, xmlCreator, jsonCreator, unitySnippetCreator, customItemCreator);
 }
 
 export enum ItemType {
@@ -121,5 +128,6 @@ export enum ItemType {
     structItem = 'Struct',
     unityScript = 'UnityScript',
     xmlItem = 'xml',
-    jsonItem = 'json'
+    jsonItem = 'json',
+    customItem = 'CustomItem'
 }

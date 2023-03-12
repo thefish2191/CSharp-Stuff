@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
+import { SnippetParser } from './SnippetParser';
 
 export class GlobalStorageMgr {
     static async ensureGlobalStorage(extensionStorage: Uri) {
@@ -14,11 +15,20 @@ export class GlobalStorageMgr {
         } catch (error) {
         }
     }
-    static async readUserSnippets(snippetUri: Uri) {
-        let rawSnippets = await vscode.workspace.fs.readFile(snippetUri);
-        console.log(rawSnippets.toString());
-        let actualSnippets = JSON.parse(rawSnippets.toString());
-        console.log(actualSnippets);
+    static async getUserSnippetsNames(userSnippets: Uri) {
+        let rawSnippets = await vscode.workspace.fs.readFile(userSnippets);
+        let snippetsArray = [];
 
+        let rawSnippetFile = JSON.parse(rawSnippets.toString());
+        for (let i in rawSnippetFile) {
+            snippetsArray.push(i);
+        }
+        return snippetsArray;
+    }
+    static async getUserSnippet(snippetName: string, userSnippets: Uri) {
+        let rawSnippets = await vscode.workspace.fs.readFile(userSnippets);
+        let rawSnippetFile = JSON.parse(rawSnippets.toString());
+        let desiredSnippet = rawSnippetFile[snippetName]['body'];
+        return desiredSnippet;
     }
 }

@@ -106,6 +106,10 @@
                 {
                     "group": "UnityItem",
                     "command": "csharp-stuff.createUnityScript"
+                },
+                {
+                    "group": "UnityItem",
+                    "command": "csharp-stuff.testCommand"
                 }
             ],
             "explorer/context": [

@@ -8,7 +8,14 @@ export class SnippetParser {
         snippetString = snippetString.replace('[namespace]', namesp);
         return new SnippetString(snippetString);
     }
-
+    static convertSnippet(snippet: string[], namesp: string) {
+        let snippetString: string = '';
+        snippet.forEach(element => {
+            snippetString += element + '\r';
+        });
+        snippetString = snippetString.replace('[namespace]', namesp);
+        return new SnippetString(snippetString);
+    }
     private static getSnippets(type: ItemType): string {
         let rawSnippet: string[] = [];
         switch (type) {
@@ -32,6 +39,9 @@ export class SnippetParser {
                 break;
             case ItemType.jsonItem:
                 rawSnippet = Snippets.json.body;
+                break;
+            case ItemType.customItem:
+                // TODO add a method here, to get the user snippets
                 break;
             default: {
                 const xError: never = type;
