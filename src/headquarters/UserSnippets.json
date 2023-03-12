@@ -3,19 +3,19 @@
         "body": [
             "namespace [namespace];",
             "",
-            "public class Bicycle",
+            "public class ${TM_FILENAME_BASE}",
             "{",
             "    $0",
             "}",
             "",
-            "public class BicycleConfiguration : IEntityTypeConfiguration<Bicycle>",
+            "public class ${TM_FILENAME_BASE}Configuration : IEntityTypeConfiguration<${TM_FILENAME_BASE}>",
             "{",
-            "    public void Configure(EntityTypeBuilder<Bicycle> builder)",
+            "    public void Configure(EntityTypeBuilder<${TM_FILENAME_BASE}> builder)",
             "    {",
             "        ",
             "    }",
             "}"
         ],
-        "description": "A full class item"
+        "description": "An Entity class item"
     }
 }

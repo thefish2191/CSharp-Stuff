@@ -2,10 +2,10 @@
     "name": "csharp-stuff",
     "displayName": "C# Stuff",
     "description": "VSCode extension to help dotnet developers do dotnet stuff",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "publisher": "TheFish2191",
     "repository": "https://github.com/thefish2191/CSharp-Stuff",
-    "icon": "/resources/icons8-cascade-64.png",
+    "icon": "/resources/icon.png",
     "engines": {
         "vscode": "^1.75.0"
     },

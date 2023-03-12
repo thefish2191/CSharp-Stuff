@@ -42,9 +42,10 @@ export class SnippetParser {
                 } catch {
                     vscode.window.showErrorMessage('No custom items where found! Please run the command: "Open Custom Item Templates" or "Rewrite Custom Item Templates" on the command palette');
                 }
-                if (userSnippets.length === 0) {
-                }
-                let userSelection = await vscode.window.showQuickPick(userSnippets);
+                let userSelection = await vscode.window.showQuickPick(userSnippets, {
+                    "ignoreFocusOut": false,
+                    "title": "Please select your custom item to create it"
+                });
                 let actualSnippet = await GlobalStorageMgr.getUserSnippet(userSelection!, actualUserSnippetsPath);
                 rawSnippet = actualSnippet;
                 break;

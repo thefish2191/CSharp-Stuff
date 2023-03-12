@@ -4,11 +4,19 @@ All notable changes to the "csharp-stuff" extension will be documented in this f
 
 ## Known Issues
 
- All good so far! This extension do all the things checked with a ✅ in the [Features](README.md/#features) section.
+- The command palette can not generate items yet, I think it will be the next feature to be added.
+- The method to add/remove custom items is too hidden, the user could never notice that option even exit.
+- The custom items templates does not contain a method to explain the user how to create new items, this due to an error throw when parsing the json with commends...
 
 ## Change log
 
  Here is a list of the changes I didn't forget to log:
+
+### 0.0.8
+
+- Added support for custom snippets, unlocking the power of creating any kind of Item.
+- Fixed #11
+- Changed Extension Icon
 
 ### 0.0.7
 

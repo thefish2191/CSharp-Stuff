@@ -23,7 +23,7 @@ export class PoliceOfficer {
             vscode.window.showErrorMessage('Operation cancelled by user');
             throw new Error(`Operation cancelled by user`);
         }
-        if (itemName.endsWith(fExt)) {
+        if (!itemName.endsWith(fExt)) {
             itemName = itemName + fExt;
         }
         itemName = itemName.replace(multiSlashes, path.sep);
