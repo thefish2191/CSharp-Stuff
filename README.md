@@ -1,11 +1,16 @@
 # C# stuff
 
-[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/TheFish2191.csharp-stuff?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=TheFish2191.csharp-stuff)
+<!-- [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/TheFish2191.csharp-stuff?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=TheFish2191.csharp-stuff) -->
+
+## Warning
+
+This version was marked as `preview`, and it's only purpose was to gather enough information to release an better and robust extension, and therefore removed from the marked place once it fulfilled it's purpose. A new version, without the `preview` tag and fully functional will be release any time soon.
+
+## Overview
 
 Adding custom features to VS Code, in order to make c# development smoother and easier.  
 Focused on Dotnet 6 and above.
 
-## Overview
 
 ![presentation](/resources/demostration00.gif)
 
