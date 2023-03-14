@@ -1,15 +1,15 @@
 {
-    "name": "csharp-stuff",
-    "displayName": "C# Stuff",
-    "description": "VSCode extension to help dotnet developers do dotnet stuff",
-    "version": "0.0.8",
+    "name": "dotnet-helper",
+    "displayName": "Dotnet Helper",
     "publisher": "TheFish2191",
+    "description": "Helps to do Dotnet stuff",
     "repository": "https://github.com/thefish2191/CSharp-Stuff",
-    "icon": "/resources/icon.png",
-    "engines": {
-        "vscode": "^1.75.0"
-    },
+    "icon": "/extensionResources/MainIcon.png",
     "license": "MIT",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.76.0"
+    },
     "categories": [
         "Programming Languages",
         "Snippets"
@@ -23,111 +23,47 @@
         "new C# class",
         "C# Extensions"
     ],
-    "preview": true,
+    "main": "./out/extension.js",
     "activationEvents": [
         "onLanguage:csharp",
         "workspaceContains:**/*.cs",
         "workspaceContains:**/*.csproj"
     ],
-    "main": "./out/extension.js",
     "contributes": {
         "snippets": [
             {
                 "language": "csharp",
-                "path": "./snippets/snippets.json/"
+                "path": "/snippets/csharp.json"
             }
         ],
         "commands": [
             {
-                "command": "csharp-stuff.createClass",
-                "title": "Class"
-            },
-            {
-                "command": "csharp-stuff.createStruct",
-                "title": "Struct"
-            },
-            {
-                "command": "csharp-stuff.createEnum",
-                "title": "Enum"
-            },
-            {
-                "command": "csharp-stuff.createInterface",
-                "title": "Interface"
-            },
-            {
-                "command": "csharp-stuff.createXML",
-                "title": "XML"
-            },
-            {
-                "command": "csharp-stuff.createJSON",
-                "title": "JSON"
-            },
-            {
-                "command": "csharp-stuff.createUnityScript",
-                "title": "Unity Script"
-            },
-            {
-                "command": "csharp-stuff.createCustomItem",
-                "title": "Custom Item"
-            },
-            {
-                "command": "csharp-stuff.openCustomItemTemplates",
-                "title": "Open custom Item templates"
-            },
-            {
-                "command": "csharp-stuff.rewriteCustomItemTemplates",
-                "title": "Rewrite custom Item templates"
-            }
-        ],
-        "submenus": [
-            {
-                "id": "Create Item",
-                "label": "Create C# Item"
+                "command": "dotnet-helper.addEmpty",
+                "title": "Add empty",
+                "category": "dotnet-helper"
             }
         ],
         "menus": {
-            "Create Item": [
+            "Create Dotnet Item": [
                 {
-                    "group": "basicItem",
-                    "command": "csharp-stuff.createClass"
-                },
-                {
-                    "group": "basicItem",
-                    "command": "csharp-stuff.createStruct"
-                },
-                {
-                    "group": "basicItem",
-                    "command": "csharp-stuff.createEnum"
-                },
-                {
-                    "group": "basicItem",
-                    "command": "csharp-stuff.createInterface"
-                },
-                {
-                    "group": "DataItem",
-                    "command": "csharp-stuff.createXML"
-                },
-                {
-                    "group": "DataItem",
-                    "command": "csharp-stuff.createJSON"
-                },
-                {
-                    "group": "UnityItem",
-                    "command": "csharp-stuff.createUnityScript"
-                },
-                {
-                    "group": "UnityItem",
-                    "command": "csharp-stuff.createCustomItem"
+                    "group": "primitiveItem",
+                    "command": "dotnet-helper.addEmpty"
                 }
             ],
             "explorer/context": [
                 {
-                    "submenu": "Create Item",
+                    "submenu": "Create Dotnet Item",
                     "group": "navigation",
                     "when": "explorerResourceIsFolder"
                 }
             ]
-        }
+        },
+        "submenus": [
+            {
+                "id": "Create Dotnet Item",
+                "label": "Create Dotnet Item"
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -138,16 +74,16 @@
         "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
-        "@types/glob": "^8.0.1",
+        "@types/vscode": "^1.76.0",
+        "@types/glob": "^8.1.0",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^16.18.12",
-        "@types/vscode": "^1.75.0",
-        "@typescript-eslint/eslint-plugin": "^5.49.0",
-        "@typescript-eslint/parser": "^5.49.0",
-        "@vscode/test-electron": "^2.2.2",
-        "eslint": "^8.33.0",
+        "@types/node": "16.x",
+        "@typescript-eslint/eslint-plugin": "^5.53.0",
+        "@typescript-eslint/parser": "^5.53.0",
+        "eslint": "^8.34.0",
         "glob": "^8.1.0",
-        "mocha": "^10.1.0",
-        "typescript": "^4.9.4"
+        "mocha": "^10.2.0",
+        "typescript": "^4.9.5",
+        "@vscode/test-electron": "^2.2.3"
     }
 }
