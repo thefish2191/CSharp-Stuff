@@ -15,7 +15,17 @@ export async function createItem(clicker: Uri, itemType: ItemType) {
     if (clicker !== undefined) {
         localPath =  determinateLocalPath(selectedRootFolder,clicker);
     }
-    let filename = await askForItemName(localPath,'empty', '.txt');
+    let fileExt = decideExt(itemType);
+    let filename = await askForItemName(localPath, itemType.toString(), fileExt);
+
+    let fileAsUri = Uri.file(selectedRootFolder + filename);
+    let fileExist = await checkIfFileExist(fileAsUri);
+    if (!fileExist) {
+        vscode.workspace.fs.writeFile(fileAsUri, new Uint8Array());
+    }
+    else{
+        vscode.window.showErrorMessage(`There is already an item with that name! Please try again with another filename`);
+    }
 }
 async function askForItemName(localPath:string, clue:string, extension:string) {
     let itemName: string | undefined;
@@ -34,6 +44,9 @@ async function askForItemName(localPath:string, clue:string, extension:string) {
     itemName = itemName.replace(multiSlashes, path.sep);
     if (itemName.startsWith('/') || itemName.startsWith('\\')) {
         itemName.substring(1);
+    }
+    if (!itemName.endsWith(extension)) {
+        itemName = itemName + extension;
     }
     return itemName;
 }
@@ -56,7 +69,6 @@ async function determinateRootFolder(clicker: Uri): Promise<string> {
         return await assignRootFolder(clicker);
     }
 }
-
 async function selectARootFolder(): Promise<string> {
     let folders = vscode.workspace.workspaceFolders;
     let foldersArray: string[] = [];
@@ -103,9 +115,42 @@ async function assignRootFolder(clicker: Uri) {
     return assignedRootFolder;
     
 }
+function decideExt(itemType: ItemType): string {
+    switch (itemType) {
+        case ItemType.empty:
+           return '.txt';
+        case ItemType.xmlItem:
+            return '.xml';
+        case ItemType.jsonItem:
+            return '.json';
+        default:
+            return '.cs';
+    }
+}
+
+async function checkIfFileExist(file: Uri): Promise < boolean > {
+    let fileExist = true;
+    try {
+        await vscode.workspace.fs.readFile(file);
+    } catch(error) {
+        if (error instanceof Error) {
+            if (error.name === 'EntryNotFound (FileSystemError)') {
+                fileExist = false;
+            }
+        }
+    }
+    return fileExist;
+}
 
 export enum ItemType {
-    empty = 'empty'
+    empty = 'Empty',
+    classItem = 'Class',
+    enumItem = 'Enum',
+    interfaceItem = 'Interface',
+    structItem = 'Struct',
+    unityScript = 'UnityScript',
+    xmlItem = 'Xml',
+    jsonItem = 'Json'
 }
     
     // async function selectParentAutomatically(clicker: Uri) {
